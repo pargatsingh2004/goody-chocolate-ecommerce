@@ -1,0 +1,712 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+THE GOODY CO. | Premium Handmade Chocolates
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero-section py-6">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <span class="badge bg-warning text-dark px-3 py-5 mb-4">
+                    Premium Handmade Chocolates
+                </span>
+
+                <h1 class="display-3 fw-bold mb-4">
+                    Every Chocolate<br>
+                    Tells A Story
+                </h1>
+
+                <p class="lead text-muted mb-4">
+                    Welcome to <strong>THE GOODY CO.</strong><br>
+                    Experience handcrafted chocolates, cookies,
+                    gift boxes and premium sweets made with love.
+                </p>
+
+                <a href="{% url 'shop' %}" class="btn btn-warning btn-lg me-4">
+                    <i class="bi bi-shop"></i>
+                    Shop Now
+                </a>
+
+                <a href="{% url 'about' %}" class="btn btn-outline-dark btn-lg">
+                    Learn More
+                </a>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img src="{% static 'images/hero.png' %}"
+                     class="img-fluid"
+                     alt="Hero Image">
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= SHOP BY CATEGORY ================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Shop By Category
+            </h2>
+
+            <p class="text-muted">
+                Discover your favourite chocolates
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+                <a href="{% url 'shop' %}?category=Chocolate Crush"
+                   class="text-decoration-none">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <img src="{% static 'images/dark.jpg' %}"
+                             class="card-img-top"
+                             alt="Chocolate Crush">
+
+                        <div class="card-body text-center">
+
+                            <h5>Chocolate Crush</h5>
+
+                        </div>
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'shop' %}?category=Cone"
+                   class="text-decoration-none">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <img src="{% static 'images/milk.jpg' %}"
+                             class="card-img-top"
+                             alt="Cone">
+
+                        <div class="card-body text-center">
+
+                            <h5>Cone</h5>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'shop' %}?category=Coconut"
+                   class="text-decoration-none">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <img src="{% static 'images/truffle.jpg' %}"
+                             class="card-img-top"
+                             alt="Coconut">
+
+                        <div class="card-body text-center">
+
+                            <h5>Coconut</h5>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'shop' %}?category=Gift Box"
+                   class="text-decoration-none">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <img src="{% static 'images/gift.jpg' %}"
+                             class="card-img-top"
+                             alt="Gift Box">
+
+                        <div class="card-body text-center">
+
+                            <h5>Gift Boxes</h5>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= FEATURED PRODUCTS ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+
+                Best Sellers
+
+            </h2>
+
+            <p class="text-muted">
+
+                Our most loved chocolates
+
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+        {% for product in products %}
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card shadow border-0 h-100">
+
+                    <a href="{% url 'product_detail' product.id %}">
+
+                        <img src="{{ product.image.url }}"
+                        class="card-img-top"
+                        style="height:250px;object-fit:cover;"
+                        alt="{{ product.name }}">
+
+                    </a>
+
+                    <div class="card-body">
+
+                        <h5>    
+
+                            <a href="{% url 'product_detail' product.id %}"
+                                class="text-dark text-decoration-none">
+
+                                {{ product.name }}
+
+                            </a>
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            {{ product.category }}
+
+                        </p>
+
+                        <h4 class="text-warning">
+
+                            ₹{{ product.price }}
+
+                        </h4>
+
+                        <form method="post"
+                            action="{% url 'add_to_cart' product.id %}">
+
+                            {% csrf_token %}
+
+                            <button class="btn btn-warning w-100">
+
+                                <i class="bi bi-cart-plus"></i>
+
+                                Add To Cart
+
+                            </button>   
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center">
+
+                <h3>No Products Available</h3>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+        {% if products %}
+
+        <div class="text-center mt-5">
+
+            <a href="{% url 'shop' %}" class="btn btn-dark btn-lg">
+                <i class="bi bi-grid"></i>
+                View All Products
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<!-- ================= WHY CHOOSE US ================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Why Choose THE GOODY CO.
+            </h2>
+
+            <p class="text-muted">
+                Crafted with passion. Delivered with love.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card border-0 shadow text-center h-100">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-award-fill display-3 text-warning"></i>
+
+                        <h4 class="mt-3">
+                            Premium Quality
+                        </h4>
+
+                        <p class="text-muted">
+                            Finest cocoa beans and imported ingredients for rich taste.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card border-0 shadow text-center h-100">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-heart-fill display-3 text-danger"></i>
+
+                        <h4 class="mt-3">
+                            Handmade
+                        </h4>
+
+                        <p class="text-muted">
+                            Fresh handcrafted chocolates prepared every day.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card border-0 shadow text-center h-100">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-truck display-3 text-success"></i>
+
+                        <h4 class="mt-3">
+                            Fast Delivery
+                        </h4>
+
+                        <p class="text-muted">
+                            Safe and quick delivery across India.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="card border-0 shadow text-center h-100">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-star-fill display-3 text-warning"></i>
+
+                        <h4 class="mt-3">
+                            Trusted Brand
+                        </h4>
+
+                        <p class="text-muted">
+                            Thousands of happy customers love our chocolates.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= SPECIAL OFFER ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 text-center">
+
+                <img src="{% static 'images/offer.png' %}"
+                     class="img-fluid"
+                     alt="Offer">
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <span class="badge bg-danger mb-3">
+                    Limited Time Offer
+                </span>
+
+                <h2 class="fw-bold mb-4">
+
+                    Premium Chocolate Gift Box
+
+                </h2>
+
+                <p class="lead text-muted">
+
+                    Surprise your loved ones with luxury handmade chocolates,
+                    beautifully packed for birthdays, anniversaries and festivals.
+
+                </p>
+
+                <h1 class="display-2 text-warning fw-bold">
+
+                    25% OFF
+
+                </h1>
+
+                <a href="{% url 'shop' %}?category=Gift Box"
+                   class="btn btn-warning btn-lg mt-3">
+
+                    <i class="bi bi-gift-fill"></i>
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+
+                Customer Reviews
+
+            </h2>
+
+            <p class="text-muted">
+
+                Loved by chocolate lovers
+
+            </p>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body">
+
+                        <h3 class="text-warning">
+
+                            ★★★★★
+
+                        </h3>
+
+                        <p>
+
+                            The chocolates were fresh, delicious and beautifully packed.
+                            Will definitely order again.
+
+                        </p>
+
+                        <h5>
+
+                            — Priya Sharma
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body">
+
+                        <h3 class="text-warning">
+
+                            ★★★★★
+
+                        </h3>
+
+                        <p>
+
+                            Amazing taste and premium quality.
+                            Perfect for gifting.
+
+                        </p>
+
+                        <h5>
+
+                            — Rahul Verma
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="card shadow border-0 h-100">
+
+                    <div class="card-body">
+
+                        <h3 class="text-warning">
+
+                            ★★★★★
+
+                        </h3>
+
+                        <p>
+
+                            Fast delivery, beautiful packaging and wonderful customer support.
+
+                        </p>
+
+                        <h5>
+
+                            — Simran Kaur
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ================= INSTAGRAM ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Follow Us On Instagram
+            </h2>
+
+            <p class="text-muted">
+                @thegoodyco
+            </p>
+
+        </div>
+
+        <div class="row g-3">
+
+            {% for i in "123456" %}
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <img src="{% static 'images/insta.jpg' %}"
+                     class="img-fluid rounded shadow"
+                     alt="Instagram">
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= NEWSLETTER ================= -->
+
+<section class="py-5 bg-dark text-white">
+
+    <div class="container text-center">
+
+        <h2 class="fw-bold mb-3">
+
+            Never Miss A Sweet Deal
+
+        </h2>
+
+        <p class="mb-4">
+
+            Subscribe to receive new arrivals, festive offers,
+            discount coupons and exclusive chocolate collections.
+
+        </p>
+
+        <form class="row justify-content-center">
+
+            <div class="col-lg-5 col-md-8">
+
+                <input
+                    type="email"
+                    class="form-control form-control-lg"
+                    placeholder="Enter your email address">
+
+            </div>
+
+            <div class="col-lg-auto mt-3 mt-lg-0">
+
+                <button
+                    type="submit"
+                    class="btn btn-warning btn-lg">
+
+                    <i class="bi bi-envelope-fill"></i>
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center">
+
+            <h2 class="fw-bold">
+
+                Ready To Taste Happiness?
+
+            </h2>
+
+            <p class="lead text-muted mt-3 mb-4">
+
+                Explore our handcrafted chocolates made with premium ingredients.
+
+            </p>
+
+            <a href="{% url 'shop' %}"
+               class="btn btn-warning btn-lg me-3">
+
+                <i class="bi bi-bag-fill"></i>
+
+                Shop Now
+
+            </a>
+
+            <a href="{% url 'contact' %}"
+               class="btn btn-outline-dark btn-lg">
+
+                <i class="bi bi-telephone-fill"></i>
+
+                Contact Us
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

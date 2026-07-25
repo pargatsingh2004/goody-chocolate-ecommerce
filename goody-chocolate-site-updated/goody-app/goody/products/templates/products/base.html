@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}THE GOODY CO.{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet ">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR - REDESIGNED ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'images/logobase2.png' %}" alt="Goody Logo"> <!--logo image-->
+            <div>
+                <h1 class="m-0 fw-bold"> THE GOODY CO.</h1>
+                <h2>Chocolate & More</h2>
+            </div>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Items -->
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+                
+                <!-- Home -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="bi bi-house-door"></i> Home
+                    </a>
+                </li>
+
+                <!-- Shop -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop' %}">
+                        <i class="bi bi-shop"></i> Shop
+                    </a>
+                </li>
+
+                <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">
+                        <i class="bi bi-info-circle"></i> About
+                    </a>
+                </li>
+
+                <!-- Contact -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">
+                        <i class="bi bi-envelope"></i> Contact
+                    </a>
+                </li>
+
+                <!-- Search -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <i class="bi bi-search"></i> Search
+                    </a>
+                </li>
+
+                <!-- Wishlist -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="{% url 'wishlist' %}">
+                        <i class="bi bi-heart"></i> Wishlist
+                        {% if wishlist_count > 0 %}
+                        <span class="badge rounded-pill bg-danger">{{ wishlist_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+
+                <!-- Cart -->
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="{% url 'cart' %}">
+                        <i class="bi bi-cart3"></i> Cart
+                        {% if cart_count %}
+                        <span class="badge rounded-pill bg-warning text-dark">{{ cart_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+
+                <!-- User Account -->
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> {{ user.first_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'wishlist' %}"><i class="bi bi-heart me-2"></i>My Wishlist</a></li>
+                            <li><a class="dropdown-item" href="{% url 'cart' %}"><i class="bi bi-cart me-2"></i>My Cart</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="bi bi-person"></i> Login
+                    </a>
+                    {% endif %}
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #3E2723, #4E342E); color: #FFF8E1; border: none;">
+                <h5 class="modal-title" id="searchModalLabel"><i class="bi bi-search me-2"></i>Search Products</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <form action="{% url 'search' %}" method="get">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="q" placeholder="Search for chocolates..." aria-label="Search" required style="border-radius: 12px 0 0 12px; border: 2px solid #D4AF37; padding: 15px;">
+                        <button class="btn btn-warning" type="submit" style="border-radius: 0 12px 12px 0; padding: 10px 30px;">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ================= CONTENT ================= -->
+
+{% block content %}
+
+{% endblock %}
+
+<!-- ================= NEWSLETTER ================= -->
+
+<section class="py-5 text-center text-white" style="background: linear-gradient(135deg, #3E2723 0%, #7B3F00 100%);">
+    <div class="container">
+        <h2 class="fw-bold mb-3" style="color: #D4AF37;">Subscribe For Sweet Offers</h2>
+        <p style="color: #FFECB3;">Get updates about new chocolates and exclusive discounts.</p>
+        <form class="row justify-content-center mt-4" id="newsletterForm" method="post" action="{% url 'newsletter_subscribe' %}">
+            {% csrf_token %}
+            <div class="col-md-5 mb-3 mb-md-0">
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" required style="border-radius: 50px; padding: 15px 25px; border: 2px solid #D4AF37;">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-warning w-100" style="border-radius: 50px; padding: 15px 25px; font-weight: 600;">
+                    Subscribe
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- ================= FOOTER - ENHANCED ================= -->
+
+<footer class="bg-dark text-white pt-6 pb-4">
+    <div class="container">
+        <div class="row">
+            
+            <!-- Brand Section -->
+            <div class="col-lg-4 mb-4">
+                <img src="{% static 'images/logo.png' %}" width="200" alt="Goody Logo" class="mb-1">
+                <h4 class="mt-2 fw-bold" style="color: #D4AF37;">THE GOODY CO.</h4>
+                <p style="color: #FFECB3;">Premium handmade chocolates crafted with love and finest ingredients.</p>
+                <div class="social-icons mt-3">
+                    <a href="https://www.facebook.com/61592021360500/" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/thegoody.co/" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://twitter.com/thegoodyco" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="https://wa.me/7973498148" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h5 class="fw-bold" style="color: #D4AF37;">Quick Links</h5>
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-2"><a href="{% url 'home' %}" style="color: #FFECB3;"><i class="bi bi-chevron-right me-2"></i>Home</a></li>
+                    <li class="mb-2"><a href="{% url 'shop' %}" style="color: #FFECB3;"><i class="bi bi-chevron-right me-2"></i>Shop</a></li>
+                    <li class="mb-2"><a href="{% url 'about' %}" style="color: #FFECB3;"><i class="bi bi-chevron-right me-2"></i>About</a></li>
+                    <li class="mb-2"><a href="{% url 'contact' %}" style="color: #FFECB3;"><i class="bi bi-chevron-right me-2"></i>Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="fw-bold" style="color: #D4AF37;">Customer Service</h5>
+                <ul class="list-unstyled mt-3" style="color: #FFECB3;">
+                    <li class="mb-2"><i class="bi bi-chevron-right me-2"></i>Shipping Policy</li>
+                    <li class="mb-2"><i class="bi bi-chevron-right me-2"></i>Returns & Refunds</li>
+                    <li class="mb-2"><i class="bi bi-chevron-right me-2"></i>Privacy Policy</li>
+                    <li class="mb-2"><i class="bi bi-chevron-right me-2"></i>Terms & Conditions</li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="fw-bold" style="color: #D4AF37;">Get In Touch</h5>
+                <ul class="list-unstyled mt-3" style="color: #FFECB3;">
+                    <li class="mb-2"><i class="bi bi-geo-alt-fill me-2" style="color: #D4AF37;"></i>278 Focal Point, Amritsar, Punjab 143001</li>
+                    <li class="mb-2"><i class="bi bi-telephone-fill me-2" style="color: #D4AF37;"></i>+91 79734 98148</li>
+                    <li class="mb-2"><i class="bi bi-envelope-fill me-2" style="color: #D4AF37;"></i>7973pargat@gmail.com</li>
+                </ul>
+                <h6 class="mt-4 fw-bold" style="color: #D4AF37;">Payment Methods</h6>
+                <div class="mt-2">
+                    <i class="bi bi-credit-card fs-3 me-2" title="Cards" style="color: #FFECB3;"></i>
+                    <i class="bi bi-qr-code fs-3 me-2" title="UPI / QR" style="color: #FFECB3;"></i>
+                    <i class="bi bi-bank fs-3" title="Bank Transfer" style="color: #FFECB3;"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <hr style="border-color: rgba(245, 230, 211, 0.2); margin: 30px 0;">
+
+        <div class="text-center" style="color: #FFECB3;">
+            <p class="mb-1">© 2026 THE GOODY CO. All Rights Reserved. | Crafted with <i class="bi bi-heart-fill" style="color: #D4AF37;"></i> by Goody.co Team</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<!-- Back to Top Button -->
+<button id="backToTop" class="btn btn-warning" style="position:fixed; bottom:50px; right: 50px; display:none; z-index:999; border-radius:50%; width:50px; height:50px;">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+</body>
+</html>

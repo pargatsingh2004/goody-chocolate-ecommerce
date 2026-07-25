@@ -1,0 +1,11 @@
+{% extends "emails/base_email.html" %}
+{% block subject %}Re: {{ contact.subject }}{% endblock %}
+{% block content %}
+<h2 style="color:#7B3F00; margin-top:0;">Hi {{ contact.name }},</h2>
+<p>Thanks for your patience! Here's our reply to your message about "<strong>{{ contact.subject }}</strong>":</p>
+<table role="presentation" width="100%" style="background:#F5E6D3; border-radius:10px; padding:15px; margin:20px 0;">
+  <tr><td style="padding:6px 10px;">{{ contact.reply|linebreaksbr }}</td></tr>
+</table>
+<p style="color:#6F4E37; font-size:13px;">Your original message: <em>{{ contact.message|truncatewords:25 }}</em></p>
+<p>Sweet regards,<br>The Goody Co. Team</p>
+{% endblock %}

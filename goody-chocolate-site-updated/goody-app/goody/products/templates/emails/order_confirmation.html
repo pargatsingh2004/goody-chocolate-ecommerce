@@ -1,0 +1,30 @@
+{% extends "emails/base_email.html" %}
+{% block subject %}Order Confirmation #{{ order.id }}{% endblock %}
+{% block content %}
+<h2 style="color:#7B3F00; margin-top:0;">Thank you for your order, {{ order.customer_name }}!</h2>
+<p>Your order <strong>#{{ order.id }}</strong> has been placed successfully. Here's a summary:</p>
+
+<table role="presentation" width="100%" cellpadding="8" style="border-collapse:collapse; margin:20px 0;">
+  <tr style="background:#3E2723; color:#FFECB3;">
+    <td><strong>Product</strong></td><td><strong>Qty</strong></td><td><strong>Price</strong></td>
+  </tr>
+  {% for item in items %}
+  <tr style="background:#F5E6D3;">
+    <td>{{ item.product_name }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>₹{{ item.total }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<table role="presentation" width="100%" style="margin:10px 0;">
+  <tr><td>Subtotal</td><td align="right">₹{{ order.subtotal }}</td></tr>
+  <tr><td>Shipping</td><td align="right">₹{{ order.shipping_fee }}</td></tr>
+  <tr><td><strong>Total</strong></td><td align="right"><strong>₹{{ order.total_price }}</strong></td></tr>
+</table>
+
+<p><strong>Delivery Address:</strong><br>{{ order.address }}{% if order.city %}, {{ order.city }}{% endif %}{% if order.state %}, {{ order.state }}{% endif %} {{ order.pincode }}</p>
+<p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+
+<p>We'll notify you as soon as your order ships. Thanks for choosing THE GOODY CO.!</p>
+{% endblock %}

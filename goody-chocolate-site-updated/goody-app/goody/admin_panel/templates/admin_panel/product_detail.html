@@ -1,0 +1,86 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block page_title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Product Details</h6>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'admin_product_edit' product.id %}" class="btn btn-sm btn-outline-gold">Edit</a>
+                    <form method="post" action="{% url 'admin_product_delete' product.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-sm btn-danger" data-confirm-delete="this product">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <div class="gd-card-body">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:10px; margin-bottom:20px;">
+
+                <table class="table" style="color:#EFE6DA;">
+                    <tr>
+                        <td style="color:#9c8f83; width:150px;"><strong>Product Name</strong></td>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Category</strong></td>
+                        <td>{{ product.category_name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Status</strong></td>
+                        <td><span class="badge-status badge-{{ product.status }}">{{ product.get_status_display }}</span></td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Price</strong></td>
+                        <td>₹{{ product.price }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Discount</strong></td>
+                        <td>{{ product.discount }}%</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Discounted Price</strong></td>
+                        <td style="font-weight:700; color:#D4AF37;">₹{{ product.discounted_price }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Stock</strong></td>
+                        <td>
+                            {{ product.stock }}
+                            {% if product.is_low_stock %}<span class="badge-status badge-danger ms-2">Low Stock!</span>{% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Featured</strong></td>
+                        <td>{% if product.featured %}<i class="bi bi-check-circle-fill" style="color:#4CAF50;"></i> Yes{% else %}<i class="bi bi-x-circle-fill" style="color:#e05c5c;"></i> No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#9c8f83;"><strong>Created</strong></td>
+                        <td>{{ product.created_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                </table>
+
+                <h6 class="fw-bold mt-4 mb-3">Description</h6>
+                <p style="line-height:1.6; color:#EFE6DA;">{{ product.description|linebreaksbr }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Quick Actions</h6>
+            </div>
+            <div class="gd-card-body">
+                <a href="{% url 'admin_product_edit' product.id %}" class="btn btn-gold w-100 mb-2">
+                    <i class="bi bi-pencil-square me-2"></i>Edit Product
+                </a>
+                <a href="{% url 'admin_products' %}" class="btn btn-outline-light w-100">
+                    <i class="bi bi-arrow-left me-2"></i>Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

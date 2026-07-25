@@ -1,0 +1,432 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+Checkout | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- Checkout Banner -->
+
+<section class="py-5 text-center text-white" style="background:#4E2A1E;">
+    <div class="container">
+        <h1 class="fw-bold">Checkout</h1>
+        <p>Complete your order securely.</p>
+    </div>
+</section>
+
+<!-- Checkout -->
+
+<section class="py-5">
+
+<div class="container">
+
+<div class="row">
+
+<!-- Billing Details -->
+
+<div class="col-lg-8">
+
+<div class="card shadow border-0">
+
+<div class="card-header bg-dark text-white">
+
+<h4>Billing Details</h4>
+
+</div>
+
+<div class="card-body">
+
+<form method="post" id="checkout-form">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>First Name</label>
+
+<input type="text"
+name="first_name"
+class="form-control"
+value="{{ request.user.first_name }}"
+placeholder="First Name" required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Last Name</label>
+
+<input type="text"
+name="last_name"
+class="form-control"
+value="{{ request.user.last_name }}"
+placeholder="Last Name" required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Email</label>
+
+<input type="email"
+name="email"
+class="form-control"
+value="{{ request.user.email }}"
+placeholder="Email" required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Phone</label>
+
+<input type="text"
+name="phone"
+class="form-control"
+placeholder="Phone Number" required>
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label>Address</label>
+
+<input type="text"
+name="address"
+class="form-control"
+placeholder="Street Address" required>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label>City</label>
+
+<input type="text"
+name="city"
+class="form-control">
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label>State</label>
+
+<input type="text"
+name="state"
+class="form-control">
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label>Pincode</label>
+
+<input type="text"
+name="pincode"
+class="form-control">
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label>Order Notes</label>
+
+<textarea name="notes"
+class="form-control"
+rows="4"
+placeholder="Write your note..."></textarea>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Order Summary -->
+
+<div class="col-lg-4">
+
+<div class="card shadow border-0">
+
+<div class="card-header bg-warning">
+
+<h4>Your Order</h4>
+
+</div>
+
+<div class="card-body">
+
+{% if cart_items %}
+
+{% for item in cart_items %}
+
+<div class="d-flex justify-content-between mb-3">
+
+<div>
+
+<strong>{{ item.product.name }}</strong>
+
+<br>
+
+<small>x {{ item.quantity }}</small>
+
+</div>
+
+<span>
+
+₹{{ item.total }}
+
+</span>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<div class="text-center">
+
+<img src="{% static 'images/empty-cart.png' %}"
+width="120">
+
+<p class="mt-3">
+
+No Products Found
+
+</p>
+
+</div>
+
+{% endif %}
+
+<hr>
+
+<div class="d-flex justify-content-between">
+
+<span>Subtotal</span>
+
+<strong>
+
+₹{{ subtotal|default:"0" }}
+
+</strong>
+
+</div>
+
+<div class="d-flex justify-content-between mt-2">
+
+<span>Shipping</span>
+
+<strong>
+
+₹99
+
+</strong>
+
+</div>
+
+<hr>
+
+<div class="d-flex justify-content-between">
+
+<h4>Total</h4>
+
+<h4 class="text-success">
+
+₹{{ total|default:"99" }}
+
+</h4>
+
+</div>
+
+<div class="mt-4">
+
+<h5>
+
+Payment Method
+
+</h5>
+
+<div class="form-check">
+
+<input class="form-check-input payment-option"
+type="radio"
+name="payment_method"
+id="pay-cod"
+value="cod"
+checked>
+
+<label class="form-check-label" for="pay-cod">
+
+<i class="bi bi-cash-coin me-1"></i> Cash On Delivery
+
+</label>
+
+</div>
+
+<div class="form-check">
+
+<input class="form-check-input payment-option"
+type="radio"
+name="payment_method"
+id="pay-upi"
+value="upi"
+data-target="#upiDetails">
+
+<label class="form-check-label" for="pay-upi">
+
+<i class="bi bi-qr-code me-1"></i> UPI / QR Payment
+
+</label>
+
+</div>
+
+<div class="form-check">
+
+<input class="form-check-input payment-option"
+type="radio"
+name="payment_method"
+id="pay-bank"
+value="bank"
+data-target="#bankDetails">
+
+<label class="form-check-label" for="pay-bank">
+
+<i class="bi bi-bank me-1"></i> Bank Transfer
+
+</label>
+
+</div>
+
+<!-- UPI / QR details, uploaded by the admin in the backend -->
+<div id="upiDetails" class="payment-details-box d-none">
+    {% if payment_settings.qr_code %}
+    <img src="{{ payment_settings.qr_code.url }}" alt="UPI QR Code" class="qr-code-img">
+    {% endif %}
+    {% if payment_settings.upi_id %}
+    <p class="mb-1"><strong>UPI ID:</strong> {{ payment_settings.upi_id }}</p>
+    {% endif %}
+    {% if not payment_settings.qr_code and not payment_settings.upi_id %}
+    <p class="text-muted mb-0"><i class="bi bi-info-circle me-1"></i>UPI details will be added by the store soon.</p>
+    {% endif %}
+</div>
+
+<!-- Bank transfer details, uploaded by the admin in the backend -->
+<div id="bankDetails" class="payment-details-box d-none">
+    {% if payment_settings.bank_name or payment_settings.account_number %}
+    <p class="mb-1"><strong>Bank:</strong> {{ payment_settings.bank_name }}</p>
+    <p class="mb-1"><strong>Account Holder:</strong> {{ payment_settings.account_holder_name }}</p>
+    <p class="mb-1"><strong>Account Number:</strong> {{ payment_settings.account_number }}</p>
+    <p class="mb-1"><strong>IFSC Code:</strong> {{ payment_settings.ifsc_code }}</p>
+    <p class="mb-0"><strong>Branch:</strong> {{ payment_settings.bank_branch }}</p>
+    {% else %}
+    <p class="text-muted mb-0"><i class="bi bi-info-circle me-1"></i>Bank details will be added by the store soon.</p>
+    {% endif %}
+</div>
+
+{% if payment_settings.instructions %}
+<p class="text-muted small mt-2 mb-0">
+    <i class="bi bi-info-circle me-1"></i>{{ payment_settings.instructions }}
+</p>
+{% endif %}
+
+</div>
+
+<button type="submit" form="checkout-form" class="btn btn-success btn-lg w-100 mt-4">
+
+<i class="bi bi-bag-check-fill me-1"></i> Place Order
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Features -->
+
+<section class="py-5 bg-light">
+
+<div class="container">
+
+<div class="row text-center">
+
+<div class="col-md-4">
+
+<div class="icon-circle"><i class="bi bi-shield-check"></i></div>
+
+<h5 class="mt-3">
+
+Secure Payment
+
+</h5>
+
+<p>
+
+100% Safe Checkout
+
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="icon-circle"><i class="bi bi-truck"></i></div>
+
+<h5 class="mt-3">
+
+Fast Delivery
+
+</h5>
+
+<p>
+
+Fresh Chocolates Delivered
+
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="icon-circle"><i class="bi bi-arrow-repeat"></i></div>
+
+<h5 class="mt-3">
+
+Easy Returns
+
+</h5>
+
+<p>
+
+7 Days Return Policy
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

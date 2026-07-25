@@ -1,0 +1,11 @@
+{% extends "emails/base_email.html" %}
+{% block subject %}Order #{{ order.id }} Update{% endblock %}
+{% block content %}
+<h2 style="color:#7B3F00; margin-top:0;">Hi {{ order.customer_name }},</h2>
+<p>Your order <strong>#{{ order.id }}</strong> status has changed to:</p>
+<p style="text-align:center; margin:25px 0;">
+  <span style="background:#D4AF37; color:#3E2723; padding:10px 24px; border-radius:50px; font-weight:700; font-size:16px;">{{ order.get_order_status_display }}</span>
+</p>
+<p>Total: ₹{{ order.total_price }} &middot; Payment: {{ order.get_payment_status_display }}</p>
+<p>Thanks for shopping with THE GOODY CO.!</p>
+{% endblock %}

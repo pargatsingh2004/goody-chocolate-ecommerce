@@ -1,0 +1,11 @@
+{% extends "emails/base_email.html" %}
+{% block subject %}Welcome to THE GOODY CO.!{% endblock %}
+{% block content %}
+<h2 style="color:#7B3F00; margin-top:0;">Welcome, {{ user.first_name|default:user.username }}! 🍫</h2>
+<p>Thank you for creating an account with THE GOODY CO. We're thrilled to have you as part of our chocolate-loving community.</p>
+<p>You can now browse our handcrafted collection, save favourites to your wishlist, and check out faster the next time you order.</p>
+<p style="margin:30px 0;">
+  <a href="{{ site_url }}" style="background:#D4AF37; color:#3E2723; padding:14px 28px; border-radius:50px; text-decoration:none; font-weight:700;">Start Shopping</a>
+</p>
+<p>Sweet regards,<br>The Goody Co. Team</p>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Newsletter{% endblock %}
+{% block page_title %}Newsletter{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Send Newsletter</h6>
+            </div>
+            <div class="gd-card-body">
+                <form method="post" class="gd-form">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.subject.id_for_label }}" class="form-label">Email Subject <span style="color:#e05c5c;">*</span></label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}<div class="text-danger small mt-1">{{ form.subject.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.message.id_for_label }}" class="form-label">Message (HTML allowed) <span style="color:#e05c5c;">*</span></label>
+                        {{ form.message }}
+                        {% if form.message.errors %}<div class="text-danger small mt-1">{{ form.message.errors }}</div>{% endif %}
+                        <small style="color:#9c8f83;">You can use HTML tags for formatting, images, links, etc.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.recipients.id_for_label }}" class="form-label">Recipients <span style="color:#e05c5c;">*</span></label>
+                        {{ form.recipients }}
+                        {% if form.recipients.errors %}<div class="text-danger small mt-1">{{ form.recipients.errors }}</div>{% endif %}
+                    </div>
+
+                    <div id="selectedCustomersDiv" class="mb-3" style="display:none;">
+                        <label class="form-label">Select Customers</label>
+                        <div style="background:#14100e; border:1px solid #33291f; border-radius:10px; padding:15px; max-height:300px; overflow-y:auto;">
+                            {% for customer in customers %}
+                            <div class="form-check">
+                                <input type="checkbox" name="selected_customers" value="{{ customer.id }}" class="form-check-input" id="customer_{{ customer.id }}">
+                                <label class="form-check-label" for="customer_{{ customer.id }}">
+                                    {{ customer.name }} ({{ customer.email }})
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if sent_count is not None %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill me-2"></i>Newsletter sent to {{ sent_count }} recipient{{ sent_count|pluralize }}.
+                    </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-gold fw-bold">
+                        <i class="bi bi-send-fill me-2"></i>Send Newsletter
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Recent Sends</h6>
+            </div>
+            <div class="gd-card-body">
+                {% if recent_logs %}
+                <div style="max-height:400px; overflow-y:auto;">
+                    {% for log in recent_logs %}
+                    <div style="padding:12px 0; border-bottom:1px solid #33291f; font-size:12px;">
+                        <p style="margin:0 0 4px;"><strong>{{ log.subject|truncatewords:5 }}</strong></p>
+                        <p style="margin:0 0 4px; color:#9c8f83;">→ {{ log.recipient }}</p>
+                        <p style="margin:0;">
+                            <span class="badge-status badge-{{ log.status }}">{{ log.get_status_display }}</span>
+                            <small style="color:#9c8f83;">{{ log.created_at|date:"M d, H:i" }}</small>
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p style="color:#9c8f83; font-size:13px; text-align:center; margin:0;">No newsletters sent yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Statistics</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0;"><strong>Total Customers:</strong> {{ customers|length }}</p>
+                <p style="margin:0;"><strong>Total Newsletter Emails:</strong> {{ recent_logs|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const recipientsSelect = document.querySelector('select[name="recipients"]');
+    const customersDiv = document.getElementById('selectedCustomersDiv');
+    if (recipientsSelect) {
+        recipientsSelect.addEventListener('change', function() {
+            customersDiv.style.display = this.value === 'selected' ? 'block' : 'none';
+        });
+    }
+});
+</script>
+{% endblock %}

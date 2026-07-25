@@ -1,0 +1,11 @@
+{% extends "emails/base_email.html" %}
+{% block subject %}We've received your message{% endblock %}
+{% block content %}
+<h2 style="color:#7B3F00; margin-top:0;">Hi {{ contact.name }},</h2>
+<p>Thanks for reaching out to THE GOODY CO.! We've received your message and our team will get back to you as soon as possible — usually within 24 hours.</p>
+<table role="presentation" width="100%" style="background:#F5E6D3; border-radius:10px; padding:15px; margin:20px 0;">
+  <tr><td style="padding:6px 10px;"><strong>Subject:</strong> {{ contact.subject }}</td></tr>
+  <tr><td style="padding:6px 10px;"><strong>Your message:</strong><br>{{ contact.message|linebreaksbr }}</td></tr>
+</table>
+<p>Sweet regards,<br>The Goody Co. Team</p>
+{% endblock %}

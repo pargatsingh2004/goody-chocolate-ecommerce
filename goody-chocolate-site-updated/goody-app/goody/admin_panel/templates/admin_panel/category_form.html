@@ -1,0 +1,45 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}{% if is_edit %}Edit{% else %}Add{% endif %} Category{% endblock %}
+{% block page_title %}{% if is_edit %}Edit Category{% else %}Add New Category{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Category Information</h6>
+            </div>
+            <div class="gd-card-body">
+                <form method="post" enctype="multipart/form-data" class="gd-form">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">Category Name <span style="color:#e05c5c;">*</span></label>
+                        {{ form.name }}
+                        {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">Category Image</label>
+                        {{ form.image }}
+                        {% if form.image.errors %}<div class="text-danger small mt-1">{{ form.image.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}<div class="text-danger small mt-1">{{ form.description.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-gold fw-bold">
+                            <i class="bi bi-check-circle-fill me-2"></i>{% if is_edit %}Update{% else %}Create{% endif %} Category
+                        </button>
+                        <a href="{% url 'admin_categories' %}" class="btn btn-outline-light">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

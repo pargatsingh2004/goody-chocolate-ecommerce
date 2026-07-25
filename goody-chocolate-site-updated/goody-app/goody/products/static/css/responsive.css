@@ -1,0 +1,354 @@
+/* =========================================
+   THE GOODY CO. - Responsive CSS
+========================================= */
+
+/* Large Devices */
+
+@media (max-width:1200px){
+
+.hero-title{
+    font-size:52px;
+}
+
+.hero-text{
+    font-size:18px;
+}
+
+}
+
+
+/* Tablets */
+
+@media (max-width:992px){
+
+.navbar-brand h2{
+    font-size:24px;
+}
+
+.hero{
+    padding:80px 0;
+    text-align:center;
+}
+
+.hero-title{
+    font-size:42px;
+}
+
+.hero-text{
+    font-size:17px;
+}
+
+.hero img{
+    margin-top:40px;
+}
+
+.product-card{
+    margin-bottom:30px;
+}
+
+.about-img{
+    margin-bottom:30px;
+}
+
+footer{
+    text-align:center;
+}
+
+footer .col-lg-4,
+footer .col-lg-3,
+footer .col-lg-2{
+    margin-bottom:30px;
+}
+
+}
+
+
+/* Mobile */
+
+@media (max-width:768px){
+
+.top-bar{
+    display:none;
+}
+
+.navbar-brand img{
+    width:55px;
+}
+
+.navbar-brand h2{
+    font-size:20px;
+}
+
+.hero{
+    padding:60px 0;
+}
+
+.hero-title{
+    font-size:34px;
+}
+
+.hero-text{
+    font-size:16px;
+}
+
+.hero-buttons .btn{
+    display:block;
+    width:100%;
+    margin-bottom:15px;
+}
+
+.section-title{
+    font-size:30px;
+}
+
+.product-card img{
+    height:220px;
+}
+
+.newsletter input{
+    margin-bottom:15px;
+}
+
+.cart-table{
+    overflow-x:auto;
+}
+
+.table{
+    min-width:700px;
+}
+
+.checkout-card{
+    margin-top:30px;
+}
+
+.about-section{
+    text-align:center;
+}
+
+.about-section img{
+    margin-bottom:25px;
+}
+
+}
+
+
+/* Small Mobile */
+
+@media (max-width:576px){
+
+.hero-title{
+    font-size:28px;
+}
+
+.hero-text{
+    font-size:15px;
+}
+
+.section-title{
+    font-size:26px;
+}
+
+.product-card{
+    padding:15px;
+}
+
+.product-card img{
+    height:200px;
+}
+
+.card-body h5{
+    font-size:18px;
+}
+
+.card-body p{
+    font-size:14px;
+}
+
+.btn{
+    font-size:14px;
+}
+
+footer{
+    font-size:14px;
+}
+
+.footer-logo{
+    width:70px;
+}
+
+}
+
+
+/* Very Small Devices */
+
+@media (max-width:400px){
+
+.hero-title{
+    font-size:24px;
+}
+
+.navbar-brand h2{
+    font-size:18px;
+}
+
+.product-card img{
+    height:180px;
+}
+
+.section-title{
+    font-size:22px;
+}
+
+.btn{
+    padding:10px 15px;
+}
+
+}
+
+
+/* Hover Effects */
+
+@media (hover:hover){
+
+.product-card:hover{
+    transform:translateY(-10px);
+    transition:.3s;
+}
+
+.btn:hover{
+    transition:.3s;
+}
+
+}
+
+
+/* Images */
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+/* Responsive Tables */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+/* Forms */
+
+input,
+textarea,
+select{
+    width:100%;
+}
+
+/* Buttons */
+
+.btn{
+    border-radius:8px;
+}
+
+/* Product Cards */
+
+.product-card{
+    transition:.4s;
+}
+
+/* Footer */
+
+footer ul{
+    padding:0;
+}
+
+footer ul li{
+    list-style:none;
+    margin-bottom:10px;
+}
+
+/* Navbar */
+
+.navbar-nav .nav-link{
+    padding:10px 15px;
+}
+
+/* ===================================
+   Hero / Category / Icon Responsiveness
+=================================== */
+
+@media (max-width:992px){
+
+.hero-section{
+    padding:70px 0 60px;
+    text-align:center;
+}
+
+.hero-section .hero-text{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.hero-image{
+    margin-top:35px;
+    max-width:280px;
+}
+
+.category-card{
+    margin-bottom:24px;
+}
+
+.icon-circle,
+.why-section i.display-4{
+    width:72px;
+    height:72px;
+    line-height:72px;
+    font-size:28px;
+}
+
+}
+
+@media (max-width:768px){
+
+.hero-badge{
+    font-size:12px;
+    padding:6px 14px;
+}
+
+.testimonial-box{
+    padding:28px;
+}
+
+.offer-section{
+    text-align:center;
+}
+
+.offer-section img{
+    margin-bottom:25px;
+}
+
+.qr-code-img{
+    width:130px;
+    height:130px;
+}
+
+}
+
+@media (max-width:576px){
+
+.category-card img{
+    height:150px;
+}
+
+.icon-circle,
+.why-section i.display-4{
+    width:64px;
+    height:64px;
+    line-height:64px;
+    font-size:24px;
+}
+
+.payment-details-box{
+    padding:12px;
+}
+
+}

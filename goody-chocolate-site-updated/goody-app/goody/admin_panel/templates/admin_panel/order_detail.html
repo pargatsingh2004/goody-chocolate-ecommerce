@@ -1,0 +1,118 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block page_title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="gd-card mb-3">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Order Items</h6>
+            </div>
+            <div class="gd-card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark-admin">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td><strong>{{ item.product_name }}</strong></td>
+                                <td>{{ item.quantity }}</td>
+                                <td>₹{{ item.price }}</td>
+                                <td>₹{{ item.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align:right; padding:15px 0; border-top:1px solid #33291f;">
+                    <p style="margin:5px 0; color:#9c8f83;">Subtotal: <strong style="color:#EFE6DA;">₹{{ order.subtotal }}</strong></p>
+                    <p style="margin:5px 0; color:#9c8f83;">Shipping: <strong style="color:#EFE6DA;">₹{{ order.shipping_fee }}</strong></p>
+                    <p style="margin:5px 0; font-size:18px; color:#D4AF37;">Total: <strong>₹{{ order.total_price }}</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Update Order Status</h6>
+            </div>
+            <div class="gd-card-body">
+                <form method="post" class="gd-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.order_status.id_for_label }}" class="form-label">Order Status</label>
+                                {{ form.order_status }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.payment_status.id_for_label }}" class="form-label">Payment Status</label>
+                                {{ form.payment_status }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gold fw-bold">
+                        <i class="bi bi-check-circle-fill me-2"></i>Update Status
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Customer Information</h6>
+            </div>
+            <div class="gd-card-body">
+                <p><strong style="color:#D4AF37;">{{ order.customer_name }}</strong></p>
+                <p style="color:#9c8f83; font-size:13px; margin:0;">{{ order.email }}</p>
+                <p style="color:#9c8f83; font-size:13px; margin:0;">{{ order.phone }}</p>
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Delivery Address</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0; line-height:1.6; font-size:13px;">
+                    {{ order.address }}<br>
+                    {% if order.city %}{{ order.city }},{% endif %} {% if order.state %}{{ order.state }}{% endif %}<br>
+                    {{ order.pincode }}
+                </p>
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Payment Info</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0; margin-bottom:8px;"><strong>Method:</strong> {{ order.get_payment_method_display }}</p>
+                <p style="margin:0;"><strong>Status:</strong> <span class="badge-status badge-{{ order.payment_status }}">{{ order.get_payment_status_display }}</span></p>
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Order Dates</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0; font-size:12px; color:#9c8f83;"><strong>Placed:</strong> {{ order.created_at|date:"M d, Y H:i" }}</p>
+                <p style="margin:0; font-size:12px; color:#9c8f83;"><strong>Updated:</strong> {{ order.updated_at|date:"M d, Y H:i" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

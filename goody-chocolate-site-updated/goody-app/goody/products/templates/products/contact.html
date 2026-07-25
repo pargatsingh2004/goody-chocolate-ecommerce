@@ -1,0 +1,186 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+Contact Us | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- Contact Banner -->
+<section class="py-5 text-center text-white" style="background:#4E2A1E;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Contact Us</h1>
+        <p class="lead">We'd love to hear from you. Get in touch with THE GOODY CO.</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Contact Form -->
+            <div class="col-lg-7 mb-4">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-header bg-dark text-white">
+                        <h3 class="mb-0">Send us a Message</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Enter your name" value="{{ form_data.name|default:'' }}" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ form_data.email|default:'' }}" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" placeholder="Enter phone number" value="{{ form_data.phone|default:'' }}">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" name="subject" class="form-control" placeholder="Subject" value="{{ form_data.subject|default:'' }}" required>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Message</label>
+                                    <textarea name="message" class="form-control" rows="6" placeholder="Write your message here..." required>{{ form_data.message|default:'' }}</textarea>
+                                </div>
+
+                            </div>
+
+                            <button class="btn btn-warning btn-lg">
+                                <i class="bi bi-send-fill"></i> Send Message
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contact Information -->
+            <div class="col-lg-5">
+
+                <div class="card shadow border-0 mb-4">
+
+                    <div class="card-header bg-warning">
+                        <h3 class="mb-0">Contact Information</h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            <i class="bi bi-geo-alt-fill text-danger"></i>
+                            <strong>Address</strong><br>
+                            THE GOODY CO.<br>
+                            Amritsar, Punjab, India
+                        </p>
+
+                        <hr>
+
+                        <p>
+                            <i class="bi bi-envelope-fill text-primary"></i>
+                            <strong>Email</strong><br>
+                            7973pargat@gmail.com
+                        </p>
+
+                        <hr>
+
+                        <p>
+                            <i class="bi bi-telephone-fill text-success"></i>
+                            <strong>Phone</strong><br>
+                            +91 79734 98148
+                        </p>
+
+                        <hr>
+
+                        <p>
+                            <i class="bi bi-clock-fill text-warning"></i>
+                            <strong>Working Hours</strong><br>
+                            Tuesday - Sunday<br>
+                            9:00 AM – 8:00 PM
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Social Media -->
+
+                <div class="card shadow border-0">
+
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0">Follow Us</h4>
+                    </div>
+
+                    <div class="card-body text-center">
+
+                        <a href="https://www.facebook.com/61592021360500/" class="btn btn-outline-primary m-2">
+                            <i class="bi bi-facebook"></i> Facebook
+                        </a>
+
+                        <a href="https://www.instagram.com/thegoody.co/" class="btn btn-outline-danger m-2">
+                            <i class="bi bi-instagram"></i> Instagram
+                        </a>
+
+                        <a href="https://wa.me/7973498148" class="btn btn-outline-success m-2">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Google Map -->
+
+<section class="pb-5">
+
+<div class="container">
+
+<div class="card shadow border-0">
+
+<div class="card-body p-0">
+
+<iframe
+src="https://www.google.com/maps?q=278,Focal Point,Amritsar, Punjab 143001b&output=embed"
+width="100%"
+height="450"
+style="border:0;"
+allowfullscreen=""
+loading="lazy">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

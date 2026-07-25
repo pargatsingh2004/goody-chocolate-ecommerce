@@ -1,0 +1,134 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+Shop | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<section class="py-5 text-white text-center" style="background: linear-gradient(135deg, #3E2723 0%, #7B3F00 100%);">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3" style="color: #D4AF37;">Our Chocolates</h1>
+        <p style="color: #FFECB3; font-size: 18px;">Discover handcrafted premium chocolates made with love.</p>
+    </div>
+</section>
+
+<!-- Category Filter -->
+<section class="py-4" style="background: #F5E6D3;">
+    <div class="container">
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+
+            <!-- All Products -->
+            <a href="{% url 'shop' %}"
+               class="btn btn-sm {% if not selected_category %}btn-dark{% else %}btn-outline-dark{% endif %}"
+               style="{% if not selected_category %}background: linear-gradient(135deg, #3E2723, #4E342E); border: none;{% endif %}">
+                All Products
+            </a>
+
+            <!-- Category Filters -->
+            {% for cat in categories %}
+            <a href="{% url 'shop' %}?category={{ cat.id }}"
+               class="btn btn-sm {% if selected_category.id == cat.id %}btn-dark{% else %}btn-outline-dark{% endif %}"
+               style="{% if selected_category.id == cat.id %}background: linear-gradient(135deg, #3E2723, #4E342E); border: none;{% endif %}">
+                {{ cat.name }}
+            </a>
+            {% endfor %}
+
+        </div>
+
+        {% if selected_category %}
+        <div class="text-center mt-3">
+            <p class="mb-0" style="color: #3E2723; font-weight: 600;">
+                <i class="bi bi-funnel-fill me-2"></i>Showing: <span style="color: #D4AF37;">{{ selected_category.name }}</span>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            {% for product in products %}
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 20px; overflow: hidden;">
+                    
+                    <a href="{% url 'product_detail' product.id %}">
+                        <img src="{{ product.image.url }}"
+                             class="card-img-top"
+                             style="height:280px; object-fit:cover;"
+                             alt="{{ product.name }}">
+                    </a>
+
+                    <div class="card-body text-center d-flex flex-column">
+                        
+                        <h5 class="fw-bold mb-2" style="color: #3E2723;">
+                            {{ product.name }}
+                        </h5>
+
+                        <p class="text-muted mb-3" style="flex-grow: 1;">
+                            {{ product.description|truncatewords:12 }}
+                        </p>
+
+                        <h4 class="mb-3" style="color: #7B3F00; font-weight: 800;">
+                            ₹{{ product.price }}
+                        </h4>
+
+                        <div class="d-grid gap-2">
+                            
+                            <a href="{% url 'product_detail' product.id %}"
+                               class="btn btn-outline-dark"
+                               style="border-radius: 50px; font-weight: 600;">
+                                <i class="bi bi-eye me-2"></i>View Details
+                            </a>
+
+                            <div class="d-flex gap-2">
+                                <form method="post" action="{% url 'add_to_cart' product.id %}" class="flex-grow-1">
+                                    {% csrf_token %}
+                                    <button class="btn btn-warning w-100" style="border-radius: 50px; font-weight: 600;">
+                                        <i class="bi bi-cart-plus me-2"></i>Add To Cart
+                                    </button>
+                                </form>
+
+                                {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'add_to_wishlist' product.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-danger" style="border-radius: 50px; padding: 12px 20px;" title="Add to Wishlist">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center py-5">
+                <img src="{% static 'images/no-product.png' %}" width="250" alt="No Products">
+                <h3 class="mt-4" style="color: #3E2723;">No Products Available</h3>
+                <p style="color: #6F4E37;">Please check back later or browse other categories.</p>
+                <a href="{% url 'shop' %}" class="btn btn-dark mt-3" style="border-radius: 50px; padding: 12px 30px;">
+                    <i class="bi bi-grid me-2"></i>View All Products
+                </a>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
