@@ -1,0 +1,4 @@
+Django==6.0.4
+Pillow>=10.0
+razorpay>=1.4.8
+reportlab>=4.0

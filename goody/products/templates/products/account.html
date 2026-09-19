@@ -1,0 +1,270 @@
+{% extends 'products/base.html' %}
+
+{% block title %}
+    My Account | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- Account Header -->
+<section
+    class="py-5"
+    style="background:#4E2A1E;color:white"
+>
+    <div class="container">
+        <h1 class="fw-bold">My Account</h1>
+        <p class="mb-0">
+            Manage your orders and delivery addresses.
+        </p>
+    </div>
+</section>
+
+
+<!-- Account Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Recent Orders -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm">
+
+                    <div
+                        class="card-header bg-dark text-white d-flex justify-content-between"
+                    >
+                        <span>Recent Orders</span>
+
+                        <a
+                            href="{% url 'order_history' %}"
+                            class="text-white"
+                        >
+                            View all
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for order in orders %}
+
+                        <div
+                            class="d-flex justify-content-between border-bottom py-3"
+                        >
+                            <div>
+                                <strong>
+                                    Order #{{ order.id }}
+                                </strong>
+
+                                <div class="small text-muted">
+                                    {{ order.created_at|date:"d M Y, h:i A" }}
+                                    ·
+                                    {{ order.item_count }}
+                                    item{{ order.item_count|pluralize }}
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <strong>
+                                    ₹{{ order.total_price }}
+                                </strong>
+
+                                <br>
+
+                                <a
+                                    href="{% url 'order_detail' order.id %}"
+                                >
+                                    Track order
+                                </a>
+                            </div>
+                        </div>
+
+                        {% empty %}
+
+                        <p class="text-muted mb-0">
+                            No orders yet.
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Saved Addresses + Add Address -->
+            <div class="col-lg-5">
+
+                <!-- Saved Addresses -->
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-header bg-warning fw-bold">
+                        Saved Addresses
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for address in addresses %}
+
+                        <div class="border rounded p-3 mb-2">
+
+                            <strong>
+                                {{ address.label }}
+                            </strong>
+
+                            {% if address.is_default %}
+                                <span class="badge bg-success">
+                                    Default
+                                </span>
+                            {% endif %}
+
+                            <div>
+                                {{ address.full_name }}
+                                ·
+                                {{ address.phone }}
+                            </div>
+
+                            <div>
+                                {{ address.address_line }},
+                                {{ address.city }},
+                                {{ address.state }}
+                                -
+                                {{ address.pincode }}
+                            </div>
+
+                            <form
+                                method="post"
+                                action="{% url 'delete_address' address.id %}"
+                                class="mt-2"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    class="btn btn-sm btn-outline-danger"
+                                >
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                        {% empty %}
+
+                        <p class="text-muted">
+                            No saved addresses.
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+
+                <!-- Add Address -->
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-dark text-white">
+                        Add Address
+                    </div>
+
+                    <div class="card-body">
+
+                        <form
+                            method="post"
+                            action="{% url 'add_address' %}"
+                        >
+                            {% csrf_token %}
+
+                            <input
+                                class="form-control mb-2"
+                                name="label"
+                                placeholder="Label (Home / Work)"
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                name="full_name"
+                                placeholder="Full name"
+                                required
+                            >
+
+                            <input
+                                class="form-control mb-2"
+                                name="phone"
+                                placeholder="Phone"
+                                required
+                            >
+
+                            <textarea
+                                class="form-control mb-2"
+                                name="address_line"
+                                placeholder="Address"
+                                required
+                            ></textarea>
+
+
+                            <div class="row g-2">
+
+                                <div class="col-6">
+                                    <input
+                                        class="form-control"
+                                        name="city"
+                                        placeholder="City"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-6">
+                                    <input
+                                        class="form-control"
+                                        name="state"
+                                        placeholder="State"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="col-6">
+                                    <input
+                                        class="form-control"
+                                        name="pincode"
+                                        placeholder="Pincode"
+                                        required
+                                    >
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-check my-3">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="is_default"
+                                    id="default"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="default"
+                                >
+                                    Make default
+                                </label>
+
+                            </div>
+
+
+                            <button class="btn btn-warning w-100">
+                                Save Address
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

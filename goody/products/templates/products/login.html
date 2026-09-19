@@ -1,0 +1,532 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Login Banner -->
+
+<section class="py-3 text-white text-center" style="background:#894d08;">
+    <div class="container">
+        <h2 class="display-4 fw-bold">Welcome Back</h2>
+        <p class="lead">Login to continue shopping delicious chocolates.</p>
+    </div>
+</section>
+
+<!-- Login Section -->
+
+<section class="py-4">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-4">
+
+<div class="card border-0 shadow-lg">
+<div class="card-body p-4">
+
+<!-- Logo -->
+
+<div class="text-center mb-4">
+
+
+<img
+    src="{% static 'images/logo.png' %}"
+    width="50"
+    alt="THE GOODY CO."
+>
+
+<h2 class="mt-3 fw-bold">
+    THE GOODY CO.
+</h2>
+
+<p class="text-muted">
+    Premium Handmade Chocolates
+</p>
+
+
+</div>
+
+<!-- Messages -->
+
+{% if messages %}
+
+{% for message in messages %}
+
+    <div
+        class="alert alert-{{ message.tags|default:'info' }}"
+        role="alert"
+    >
+        {{ message }}
+    </div>
+
+{% endfor %}
+
+
+{% endif %}
+
+<!-- Existing Error -->
+
+{% if error %}
+
+<div
+    class="alert alert-danger d-flex align-items-center"
+    role="alert"
+>
+
+
+<i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+<div>
+
+    {{ error }}
+
+    {% if "register" in error %}
+
+        <a
+            href="{% url 'register' %}"
+            class="alert-link"
+        >
+            Create one now &rarr;
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+</div>
+
+{% endif %}
+
+<!-- ======================================================
+     LOGIN METHOD TABS
+====================================================== -->
+
+<div class="mb-4">
+
+
+<div
+    class="btn-group w-100"
+    role="group"
+    aria-label="Login method"
+>
+
+    <button
+        type="button"
+        class="btn btn-warning"
+        id="passwordTab"
+        onclick="showPasswordLogin()"
+    >
+        <i class="bi bi-person-lock"></i>
+        Password
+    </button>
+
+    <button
+        type="button"
+        class="btn btn-outline-warning"
+        id="otpTab"
+        onclick="showOTPLogin()"
+    >
+        <i class="bi bi-envelope"></i>
+        Email OTP
+    </button>
+
+</div>
+
+
+</div>
+
+<!-- ======================================================
+     USERNAME + PASSWORD LOGIN
+====================================================== -->
+
+<div id="passwordLogin">
+
+<form
+    method="post"
+    action="{% url 'login' %}"
+>
+
+{% csrf_token %}
+
+<input
+    type="hidden"
+    name="login_method"
+    value="password"
+>
+
+{% if next %}
+
+    <input
+        type="hidden"
+        name="next"
+        value="{{ next }}"
+    >
+
+{% endif %}
+
+
+<!-- Username -->
+<div class="mb-3">
+
+    <label
+        class="form-label"
+        for="username"
+    >
+        Username
+    </label>
+
+    <input
+        type="text"
+        id="username"
+        name="username"
+        class="form-control"
+        placeholder="Enter Username"
+        value="{{ username|default:'' }}"
+        autocomplete="username"
+        required
+    >
+
+</div>
+
+
+<!-- Password -->
+<div class="mb-3">
+
+    <label
+        class="form-label"
+        for="password"
+    >
+        Password
+    </label>
+
+    <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        placeholder="Enter Password"
+        autocomplete="current-password"
+        required
+    >
+
+</div>
+
+
+<!-- Remember / Forgot -->
+<div class="d-flex justify-content-between mb-4">
+
+    <div class="form-check">
+
+        <input
+            class="form-check-input"
+            type="checkbox"
+            name="remember"
+            id="remember"
+        >
+
+        <label
+            class="form-check-label"
+            for="remember"
+        >
+            Remember Me
+        </label>
+
+    </div>
+
+    <a
+        href="{% url 'forgot_password' %}"
+        class="text-decoration-none"
+    >
+        Forgot Password?
+    </a>
+
+</div>
+
+
+<!-- Login -->
+<button
+    type="submit"
+    class="btn btn-warning w-100 btn-lg mb-2"
+>
+
+    <i class="bi bi-box-arrow-in-right"></i>
+    Login
+
+</button>
+
+</form>
+
+</div>
+
+<!-- ======================================================
+     EMAIL OTP LOGIN
+====================================================== -->
+
+<div
+    id="otpLogin"
+    style="display:none;"
+>
+
+<form
+    method="post"
+    action="{% url 'login' %}"
+>
+
+{% csrf_token %}
+
+<input
+    type="hidden"
+    name="login_method"
+    value="otp"
+>
+
+{% if next %}
+
+    <input
+        type="hidden"
+        name="next"
+        value="{{ next }}"
+    >
+
+{% endif %}
+
+
+<!-- Email -->
+<div class="mb-3">
+
+    <label
+        class="form-label"
+        for="loginEmail"
+    >
+        Email Address
+    </label>
+
+    <input
+        type="email"
+        id="loginEmail"
+        name="email"
+        class="form-control"
+        placeholder="Enter your registered email"
+        autocomplete="email"
+        required
+    >
+
+</div>
+
+
+<div class="alert alert-light border">
+
+    <i class="bi bi-info-circle text-warning"></i>
+
+    <small>
+        We'll send a 6-digit verification code
+        to your registered email address.
+        The OTP will be valid for 5 minutes.
+    </small>
+
+</div>
+
+
+<!-- Send OTP -->
+<button
+    type="submit"
+    class="btn btn-warning w-100 btn-lg mb-2"
+>
+
+    <i class="bi bi-envelope-check"></i>
+    Send Login OTP
+
+</button>
+
+
+</form>
+
+</div>
+
+<!-- ======================================================
+     ADMIN LOGIN
+====================================================== -->
+
+<a
+href="{% url 'admin_login' %}"
+class="btn btn-dark w-100 btn-lg mt-2"
+
+>
+
+
+<i class="bi bi-shield-lock"></i>
+Admin Login
+
+
+</a>
+
+<!-- Register -->
+
+<div class="text-center mt-4">
+
+
+<p>
+    Don't have an account?
+
+    <a
+        href="{% url 'register' %}"
+        class="fw-bold"
+    >
+        Create Account
+    </a>
+
+
+
+</div>
+
+<hr>
+
+<!-- Social Login -->
+
+<div class="text-center">
+
+<h6>
+    Or Login With
+</h6>
+
+<a
+    href="#"
+    class="btn btn-outline-primary me-2"
+>
+
+    <i class="bi bi-facebook"></i>
+    Facebook
+
+</a>
+
+<a
+    href="#"
+    class="btn btn-outline-danger"
+>
+
+    <i class="bi bi-google"></i>
+    Google
+
+</a>
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================
+     FEATURES
+====================================================== -->
+
+<section class="py-5 bg-light">
+
+<div class="container">
+
+<div class="row text-center">
+
+<!-- Secure Login -->
+
+<div class="col-md-4">
+
+<div class="icon-circle">
+    <i class="bi bi-shield-lock"></i>
+</div>
+
+<h5 class="mt-3">
+    Secure Login
+</h5>
+
+<p>
+    Your information is protected.
+</p>
+
+
+</div>
+
+<!-- Exclusive Offers -->
+
+<div class="col-md-4">
+
+
+<div class="icon-circle">
+    <i class="bi bi-gift"></i>
+</div>
+
+<h5 class="mt-3">
+    Exclusive Offers
+</h5>
+
+<p>
+    Members receive special discounts.
+</p>
+
+
+</div>
+
+<!-- Fast Checkout -->
+
+<div class="col-md-4">
+
+
+<div class="icon-circle">
+    <i class="bi bi-truck"></i>
+</div>
+
+<h5 class="mt-3">
+    Fast Checkout
+</h5>
+
+<p>
+    Order your chocolates in minutes.
+</p>
+
+
+</div>
+
+</div>
+</div>
+
+</section>
+
+<!-- ======================================================
+     LOGIN METHOD JAVASCRIPT
+====================================================== -->
+
+<script>
+
+function showPasswordLogin() {
+
+    document.getElementById("passwordLogin").style.display = "block";
+    document.getElementById("otpLogin").style.display = "none";
+
+    document.getElementById("passwordTab").classList.remove("btn-outline-warning");
+    document.getElementById("passwordTab").classList.add("btn-warning");
+
+    document.getElementById("otpTab").classList.remove("btn-warning");
+    document.getElementById("otpTab").classList.add("btn-outline-warning");
+}
+
+
+function showOTPLogin() {
+
+    document.getElementById("passwordLogin").style.display = "none";
+    document.getElementById("otpLogin").style.display = "block";
+
+    document.getElementById("otpTab").classList.remove("btn-outline-warning");
+    document.getElementById("otpTab").classList.add("btn-warning");
+
+    document.getElementById("passwordTab").classList.remove("btn-warning");
+    document.getElementById("passwordTab").classList.add("btn-outline-warning");
+}
+
+</script>
+
+{% endblock %}

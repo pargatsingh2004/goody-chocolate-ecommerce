@@ -1,0 +1,51 @@
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .navbar .dropdown-menu {
+        width: 100%;
+    }
+
+    .trust-item {
+        margin-bottom: 18px;
+    }
+
+    .shop-toolbar .sort-select {
+        width: 100% !important;
+    }
+
+    .product-body {
+        padding: 16px;
+    }
+
+    .product-title {
+        font-size: 15px;
+    }
+
+    .price {
+        font-size: 18px;
+    }
+
+    .footer-logo {
+        max-width: 170px;
+    }
+
+    .goody-footer {
+        padding-top: 50px;
+    }
+
+    .footer-contact {
+        padding-left: 0;
+    }
+
+    .hero-section .btn {
+        width: 100%;
+    }
+}

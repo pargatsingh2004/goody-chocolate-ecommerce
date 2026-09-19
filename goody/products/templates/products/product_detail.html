@@ -1,0 +1,528 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ product.name }} | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= PRODUCT DETAIL ================= -->
+
+<section class="detail-section">
+
+    <div class="container">
+
+        <div class="row g-5">
+
+            <!-- Product Image -->
+
+            <div class="col-lg-6">
+
+                <div class="detail-image-wrap">
+
+                    <img
+                        src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/no-product.png' %}{% endif %}"
+                        alt="{{ product.name }}"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Product Information -->
+
+            <div class="col-lg-6">
+
+                <div class="detail-content">
+
+                    <div class="eyebrow">
+
+                        {% if product.category %}
+                            {{ product.category.name }}
+                        {% else %}
+                            Premium chocolate
+                        {% endif %}
+
+                    </div>
+
+                    <h1 class="detail-title mt-2">
+                        {{ product.name }}
+                    </h1>
+
+
+                    <!-- Rating -->
+
+                    <div class="d-flex align-items-center gap-3 mb-3">
+
+                        <span class="star-rating">
+                            ★★★★★
+                        </span>
+
+                        <span class="small text-muted">
+                            {{ review_count }}
+                            review{{ review_count|pluralize }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- Price -->
+
+                    <div class="mb-4">
+
+                        {% if product.discount > 0 %}
+
+                            <span class="detail-price">
+                                ₹{{ product.discounted_price }}
+                            </span>
+
+                            <span class="old-price ms-3 fs-6">
+                                ₹{{ product.price }}
+                            </span>
+
+                            <span class="badge bg-danger ms-2">
+                                {{ product.discount }}% OFF
+                            </span>
+
+                        {% else %}
+
+                            <span class="detail-price">
+                                ₹{{ product.price }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <p class="text-muted">
+                        {{ product.description }}
+                    </p>
+
+                    <hr class="my-4">
+
+
+                    <!-- Stock -->
+
+                    <div class="mb-4">
+
+                        {% if product.stock > 0 %}
+
+                            <span class="text-success fw-semibold">
+
+                                <i class="bi bi-check-circle me-1"></i>
+
+                                In stock
+
+                            </span>
+
+                            {% if product.is_low_stock %}
+
+                                <span class="text-warning small ms-3">
+                                    Only {{ product.stock }} left
+                                </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <span class="text-danger fw-semibold">
+                                Out of stock
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Add To Cart -->
+
+                    {% if product.stock > 0 %}
+
+                        <form
+                            method="post"
+                            class="d-flex flex-wrap gap-3 align-items-center"
+                        >
+
+                            {% csrf_token %}
+
+                            <div class="quantity-control">
+
+                                <button
+                                    type="button"
+                                    data-qty-minus
+                                    aria-label="Decrease quantity"
+                                >
+                                    −
+                                </button>
+
+                                <input
+                                    id="quantity"
+                                    type="number"
+                                    name="quantity"
+                                    value="1"
+                                    min="1"
+                                    max="{{ product.stock }}"
+                                    aria-label="Quantity"
+                                >
+
+                                <button
+                                    type="button"
+                                    data-qty-plus
+                                    aria-label="Increase quantity"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                            <button
+                                class="btn btn-goody btn-lg px-4 add-cart"
+                            >
+
+                                <i class="bi bi-bag-plus me-2"></i>
+
+                                Add to cart
+
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <button
+                            class="btn btn-secondary btn-lg"
+                            disabled
+                        >
+                            Currently unavailable
+                        </button>
+
+                    {% endif %}
+
+
+                    <!-- Benefits -->
+
+                    <div class="row g-3 mt-4">
+
+                        <div class="col-md-4">
+
+                            <div class="benefit-card">
+
+                                <i class="bi bi-truck fs-4 text-warning"></i>
+
+                                <div class="fw-semibold mt-2">
+                                    Fast delivery
+                                </div>
+
+                                <small class="text-muted">
+                                    Carefully packed
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="benefit-card">
+
+                                <i class="bi bi-award fs-4 text-warning"></i>
+
+                                <div class="fw-semibold mt-2">
+                                    Premium quality
+                                </div>
+
+                                <small class="text-muted">
+                                    Made with care
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="benefit-card">
+
+                                <i class="bi bi-shield-check fs-4 text-warning"></i>
+
+                                <div class="fw-semibold mt-2">
+                                    Secure checkout
+                                </div>
+
+                                <small class="text-muted">
+                                    Shop confidently
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REVIEWS ================= -->
+
+<section
+    class="py-5"
+    style="background:#f7eee4"
+>
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- Review Summary -->
+
+            <div class="col-lg-4">
+
+                <div class="review-card h-100">
+
+                    <div class="eyebrow">
+                        Customer love
+                    </div>
+
+                    <h2 class="h3 fw-bold">
+                        {{ average_rating|floatformat:1 }} / 5
+                    </h2>
+
+                    <div class="star-rating fs-5">
+                        ★★★★★
+                    </div>
+
+                    <p class="text-muted">
+                        Based on
+                        {{ review_count }}
+                        approved review{{ review_count|pluralize }}.
+                    </p>
+
+
+                    {% if user.is_authenticated %}
+
+                        <hr>
+
+                        <form
+                            method="post"
+                            action="{% url 'add_review' product.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <label class="form-label fw-semibold">
+                                Your rating
+                            </label>
+
+                            <select
+                                class="form-select mb-3"
+                                name="rating"
+                                required
+                            >
+
+                                <option value="">
+                                    Choose rating
+                                </option>
+
+                                <option value="5">
+                                    ★★★★★ — Excellent
+                                </option>
+
+                                <option value="4">
+                                    ★★★★☆ — Very good
+                                </option>
+
+                                <option value="3">
+                                    ★★★☆☆ — Good
+                                </option>
+
+                                <option value="2">
+                                    ★★☆☆☆ — Fair
+                                </option>
+
+                                <option value="1">
+                                    ★☆☆☆☆ — Poor
+                                </option>
+
+                            </select>
+
+                            <textarea
+                                class="form-control mb-3"
+                                name="comment"
+                                rows="4"
+                                placeholder="Tell us about your experience"
+                            ></textarea>
+
+                            <button class="btn btn-goody">
+                                Submit review
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <a
+                            href="{% url 'login' %}?next={{ request.path }}"
+                            class="btn btn-outline-dark rounded-pill"
+                        >
+                            Login to review
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Reviews -->
+
+            <div class="col-lg-8">
+
+                {% for review in reviews %}
+
+                    <div class="review-card mb-3">
+
+                        <div class="d-flex justify-content-between">
+
+                            <strong>
+                                {{ review.user.get_full_name|default:review.user.username }}
+                            </strong>
+
+                            <span class="star-rating">
+                                {{ review.rating }}/5 ★
+                            </span>
+
+                        </div>
+
+                        <p class="text-muted mb-0 mt-2">
+                            {{ review.comment }}
+                        </p>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="review-card">
+                        No reviews yet. Be the first to share your experience.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= RELATED PRODUCTS ================= -->
+
+{% if related_products %}
+
+    <section class="product-section">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <div class="eyebrow">
+                    You may also like
+                </div>
+
+                <h2 class="section-title">
+                    More to love
+                </h2>
+
+            </div>
+
+
+            <div class="row g-4">
+
+                {% for p in related_products %}
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="product-card">
+
+                            <div class="product-media">
+
+                                <a href="{% url 'product_detail' p.id %}">
+
+                                    <img
+                                        src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'images/no-product.png' %}{% endif %}"
+                                        alt="{{ p.name }}"
+                                        loading="lazy"
+                                    >
+
+                                </a>
+
+                            </div>
+
+
+                            <div class="product-body">
+
+                                <h3 class="product-title">
+
+                                    <a href="{% url 'product_detail' p.id %}">
+                                        {{ p.name }}
+                                    </a>
+
+                                </h3>
+
+
+                                <div class="mt-auto">
+
+                                    <span class="price">
+
+                                        ₹{% if p.discount > 0 %}
+                                            {{ p.discounted_price }}
+                                        {% else %}
+                                            {{ p.price }}
+                                        {% endif %}
+
+                                    </span>
+
+                                </div>
+
+
+                                <a
+                                    href="{% url 'product_detail' p.id %}"
+                                    class="btn btn-outline-dark rounded-pill mt-3"
+                                >
+                                    View product
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endif %}
+
+{% endblock %}

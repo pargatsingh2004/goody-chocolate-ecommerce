@@ -1,0 +1,160 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}Secure Checkout | THE GOODY CO.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="checkout-hero">
+    <div class="container">
+        <span class="checkout-eyebrow">THE GOODY CO.</span>
+        <h1>Complete your order</h1>
+        <p>Fresh chocolates, carefully packed and delivered to your door.</p>
+        <div class="checkout-steps">
+            <span class="active"><b>1</b> Delivery</span><i></i><span><b>2</b> Payment</span><i></i><span><b>3</b> Confirmation</span>
+        </div>
+    </div>
+</section>
+
+<section class="checkout-section">
+<div class="container">
+{% if messages %}
+    {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+{% endif %}
+
+<form method="post" id="checkout-form" novalidate>
+{% csrf_token %}
+<input type="hidden" name="payment_method" id="selected-payment-method" value="cod">
+<div class="checkout-grid">
+    <main>
+        {% if addresses %}
+        <div class="checkout-card">
+            <div class="card-heading"><div><span class="section-number">01</span><div><h2>Choose delivery address</h2><p>Select a saved address or enter a new one.</p></div></div><a href="{% url 'account' %}">Manage</a></div>
+            <div class="saved-addresses">
+            {% for address in addresses %}
+                <label class="address-option {% if default_address.id == address.id %}selected{% endif %}">
+                    <input type="radio" name="address_id" value="{{ address.id }}" {% if default_address.id == address.id %}checked{% endif %}>
+                    <span class="radio-mark"></span>
+                    <span class="address-copy"><strong>{{ address.label }}{% if address.is_default %} · Default{% endif %}</strong><br>{{ address.full_name }} · {{ address.phone }}<br>{{ address.address_line }}, {{ address.city }}, {{ address.state }} - {{ address.pincode }}</span>
+                </label>
+            {% endfor %}
+            </div>
+            <button type="button" class="outline-btn" id="new-address-btn">+ Use a new address</button>
+        </div>
+        {% endif %}
+
+        <div class="checkout-card" id="delivery-card">
+            <div class="card-heading"><div><span class="section-number">01</span><div><h2>Delivery details</h2><p>Where should we deliver your order?</p></div></div></div>
+            <div class="form-grid">
+                <div><label>First name *</label><input name="first_name" id="first_name" value="{{ checkout_data.first_name|default:request.user.first_name }}" required></div>
+                <div><label>Last name</label><input name="last_name" id="last_name" value="{{ checkout_data.last_name|default:request.user.last_name }}"></div>
+                <div><label>Email *</label><input type="email" name="email" value="{{ checkout_data.email|default:request.user.email }}" required></div>
+                <div><label>Phone *</label><input name="phone" id="phone" value="{{ checkout_data.phone|default:'' }}" placeholder="10 digit mobile number" required></div>
+                <div class="full"><label>Street address *</label><textarea name="address" id="address" rows="2" required>{{ checkout_data.address|default:'' }}</textarea></div>
+                <div><label>City *</label><input name="city" id="city" value="{{ checkout_data.city|default:'' }}" required></div>
+                <div><label>State *</label><input name="state" id="state" value="{{ checkout_data.state|default:'' }}" required></div>
+                <div><label>PIN code *</label><input name="pincode" id="pincode" maxlength="6" value="{{ checkout_data.pincode|default:'' }}" required></div>
+                <div class="full address-save"><label><input type="checkbox" name="save_address"> Save this address for next time</label><select name="address_label"><option>Home</option><option>Work</option><option>Other</option></select></div>
+                <div class="full"><label>Order notes <span>(optional)</span></label><textarea name="notes" rows="3" placeholder="Any delivery instructions?">{{ checkout_data.notes|default:'' }}</textarea></div>
+            </div>
+        </div>
+
+        <div class="checkout-card">
+            <div class="card-heading"><div><span class="section-number">02</span><div><h2>Payment method</h2><p>Choose how you want to pay.</p></div></div></div>
+            <div class="payment-options">
+                <label class="payment-option active"><input type="radio" name="payment_choice" value="cod" checked><span><b>Cash on Delivery</b><small>Pay when your order arrives</small></span><i>₹</i></label>
+                <label class="payment-option"><input type="radio" name="payment_choice" value="upi"><span><b>UPI / QR Payment</b><small>Pay using your UPI app</small></span><i>⌁</i></label>
+                <label class="payment-option"><input type="radio" name="payment_choice" value="bank"><span><b>Bank Transfer</b><small>Transfer directly to our account</small></span><i>▣</i></label>
+                <label class="payment-option"><input type="radio" name="payment_choice" value="razorpay"><span><b>Online Payment</b><small>Cards, UPI, net banking & wallets via Razorpay</small></span><i>↗</i></label>
+            </div>
+            <div class="payment-info" id="payment-info"></div>
+        </div>
+    </main>
+
+    <aside>
+        <div class="summary-card">
+            <div class="summary-head"><h2>Order summary</h2><span>{{ cart_items|length }} item{{ cart_items|length|pluralize }}</span></div>
+            <div class="summary-products">
+            {% for item in cart_items %}<div class="summary-product"><div class="summary-image">{% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">{% endif %}</div><div><strong>{{ item.product.name }}</strong><small>Qty {{ item.quantity }}</small></div><b>₹{{ item.total|floatformat:2 }}</b></div>{% endfor %}
+            </div>
+            <div class="summary-lines"><div><span>Subtotal</span><b>₹{{ subtotal|floatformat:2 }}</b></div><div><span>Delivery</span><b>{% if shipping == 0 %}<em>FREE</em>{% else %}₹{{ shipping|floatformat:2 }}{% endif %}</b></div>{% if coupon %}<div class="discount"><span>Coupon · {{ coupon.code }}</span><b>-₹{{ discount_amount|floatformat:2 }}</b></div>{% endif %}</div>
+            <div class="summary-total"><span>Total</span><strong>₹{{ total|floatformat:2 }}</strong></div>
+            <button type="submit" class="place-order-btn">Place order <span>→</span></button>
+            <p class="secure-note">🔒 Your information is protected with secure checkout.</p>
+        </div>
+        <div class="trust-mini"><span>✓</span><div><b>Freshly packed</b><small>Quality checked before dispatch</small></div></div>
+        <div class="trust-mini"><span>✓</span><div><b>Free delivery over ₹999</b><small>Delivered across India</small></div></div>
+    </aside>
+</div>
+</form>
+</div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+ const form=document.getElementById('checkout-form'), hidden=document.getElementById('selected-payment-method');
+ const paymentInfo=document.getElementById('payment-info');
+ const settings={upi:`{% if payment_settings.upi_id %}<b>UPI ID:</b> {{ payment_settings.upi_id }}{% else %}UPI payment details will be shared by the store.{% endif %}`,bank:`{% if payment_settings.bank_name %}<b>{{ payment_settings.bank_name }}</b><br>Account: {{ payment_settings.account_number }}<br>IFSC: {{ payment_settings.ifsc_code }}{% else %}Bank transfer details will be shared by the store.{% endif %}`};
+ function payment(v){hidden.value=v; document.querySelectorAll('.payment-option').forEach(x=>x.classList.toggle('active',x.querySelector('input').value===v)); paymentInfo.innerHTML=v==='cod'?'Pay safely when your order is delivered.':settings[v]||''; paymentInfo.classList.toggle('show',v!=='cod');}
+ document.querySelectorAll('input[name="payment_choice"]').forEach(x=>x.addEventListener('change',()=>payment(x.value))); payment('cod');
+ document.querySelectorAll('.address-option input').forEach(x=>x.addEventListener('change',()=>document.querySelectorAll('.address-option').forEach(a=>a.classList.toggle('selected',a.querySelector('input').checked))));
+ const newBtn=document.getElementById('new-address-btn'); if(newBtn)newBtn.onclick=()=>{document.querySelectorAll('.address-option input').forEach(x=>x.checked=false);document.querySelectorAll('.address-option').forEach(a=>a.classList.remove('selected')); document.querySelectorAll('#delivery-card input,#delivery-card textarea').forEach(x=>{if(x.type!=='checkbox')x.value='';}); document.getElementById('delivery-card').scrollIntoView({behavior:'smooth',block:'start'});};
+ document.querySelectorAll('.address-option').forEach(label=>label.addEventListener('click',()=>{const r=label.querySelector('input'); setTimeout(()=>{ if(r.checked){ const t=label.innerText; const lines=t.split('\n').map(x=>x.trim()).filter(Boolean); }},0)}));
+});
+</script>
+{% endblock %}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+(function () {
+  const form = document.getElementById('checkout-form');
+  if (!form) return;
+  const paymentInput = document.getElementById('selected-payment-method');
+  const choices = document.querySelectorAll('input[name="payment_choice"]');
+  const originalSubmit = form.querySelector('button[type="submit"]');
+  choices.forEach(function (choice) {
+    choice.addEventListener('change', function () { paymentInput.value = this.value; });
+  });
+
+  form.addEventListener('submit', async function (event) {
+    if (paymentInput.value !== 'razorpay') return;
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    if (originalSubmit) { originalSubmit.disabled = true; originalSubmit.dataset.oldText = originalSubmit.textContent; originalSubmit.textContent = 'Starting secure payment…'; }
+    try {
+      const response = await fetch('{% url "create_razorpay_order" %}', {
+        method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token }}', 'X-Requested-With': 'XMLHttpRequest'}, body: new FormData(form)
+      });
+      const data = await response.json();
+      if (!data.ok) throw new Error(data.error || 'Unable to start payment.');
+      if (!window.Razorpay) throw new Error('Razorpay Checkout could not be loaded.');
+      const rzp = new Razorpay({
+        key: data.key, amount: data.amount, currency: data.currency,
+        name: data.name, description: data.description, order_id: data.razorpay_order_id,
+        prefill: data.prefill,
+        theme: {color: '#4a2418'},
+        handler: async function (payment) {
+          const verify = await fetch('{% url "verify_razorpay_payment" %}', {
+            method: 'POST', headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
+            body: JSON.stringify({order_id: data.order_id, razorpay_order_id: payment.razorpay_order_id, razorpay_payment_id: payment.razorpay_payment_id, razorpay_signature: payment.razorpay_signature})
+          });
+          const result = await verify.json();
+          if (!result.ok) { alert(result.error || 'Payment verification failed.'); if (originalSubmit) { originalSubmit.disabled = false; originalSubmit.textContent = originalSubmit.dataset.oldText; } return; }
+          window.location.href = result.redirect;
+        },
+        modal: {ondismiss: function () { if (originalSubmit) { originalSubmit.disabled = false; originalSubmit.textContent = originalSubmit.dataset.oldText; }}}
+      });
+      rzp.on('payment.failed', function (response) { alert(response.error && response.error.description ? response.error.description : 'Payment failed. Please try again.'); if (originalSubmit) { originalSubmit.disabled = false; originalSubmit.textContent = originalSubmit.dataset.oldText; }});
+      rzp.open();
+    } catch (error) {
+      alert(error.message || 'Unable to start payment.');
+      if (originalSubmit) { originalSubmit.disabled = false; originalSubmit.textContent = originalSubmit.dataset.oldText; }
+    }
+  });
+})();
+</script>

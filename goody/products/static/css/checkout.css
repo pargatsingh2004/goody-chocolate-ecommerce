@@ -1,0 +1,601 @@
+
+/* =========================================================
+   CHECKOUT HERO
+   ========================================================= */
+
+.checkout-hero {
+    background: linear-gradient(135deg, #2b160f, #5a3022);
+    color: #fff;
+    padding: 70px 0 58px;
+}
+
+.checkout-hero .container {
+    max-width: 1180px;
+}
+
+.checkout-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    opacity: .65;
+}
+
+.checkout-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(38px, 5vw, 62px);
+    margin: 12px 0 8px;
+}
+
+.checkout-hero p {
+    opacity: .75;
+}
+
+.checkout-steps {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 13px;
+}
+
+.checkout-steps b {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ffffff55;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.checkout-steps .active b {
+    background: #fff;
+    color: #4a271b;
+}
+
+.checkout-steps i {
+    width: 45px;
+    height: 1px;
+    background: #ffffff44;
+}
+
+
+/* =========================================================
+   CHECKOUT SECTION
+   ========================================================= */
+
+.checkout-section {
+    background: #f7f3ef;
+    padding: 45px 0 80px;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(330px, .8fr);
+    gap: 25px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   CHECKOUT CARDS
+   ========================================================= */
+
+.checkout-card,
+.summary-card,
+.trust-mini {
+    background: #fff;
+    border: 1px solid #eadfd8;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px #2b160f08;
+}
+
+.checkout-card {
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.card-heading > div {
+    display: flex;
+    gap: 14px;
+}
+
+.card-heading h2,
+.summary-head h2 {
+    font: 600 24px Georgia, serif;
+    color: #2b160f;
+    margin: 0;
+}
+
+.card-heading p {
+    margin: 4px 0 0;
+    color: #87766c;
+    font-size: 13px;
+}
+
+.card-heading > a {
+    font-size: 13px;
+    color: #69402f;
+}
+
+.section-number {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #a36a4e;
+    padding-top: 5px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+}
+
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.form-grid label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #4b3830;
+    margin-bottom: 7px;
+}
+
+.form-grid label span {
+    font-weight: 400;
+    color: #9a8c84;
+}
+
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+    width: 100%;
+    border: 1px solid #ded3cd;
+    border-radius: 10px;
+    padding: 13px 14px;
+    background: #fff;
+    outline: none;
+    font: inherit;
+    color: #33251f;
+    transition: .2s;
+}
+
+.form-grid input:focus,
+.form-grid textarea:focus,
+.form-grid select:focus {
+    border-color: #8c5b43;
+    box-shadow: 0 0 0 3px #8c5b4310;
+}
+
+
+/* =========================================================
+   ADDRESS
+   ========================================================= */
+
+.address-save {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.address-save label {
+    margin: 0;
+    flex: 1;
+}
+
+.address-save input {
+    width: auto;
+    margin-right: 7px;
+}
+
+.address-save select {
+    width: 130px;
+}
+
+.saved-addresses {
+    display: grid;
+    gap: 10px;
+}
+
+.address-option {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    border: 1px solid #e5dad3;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.address-option.selected {
+    border-color: #7b4c37;
+    background: #fcf8f5;
+}
+
+.address-option input {
+    display: none;
+}
+
+.radio-mark {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #b9a89f;
+    border-radius: 50%;
+    margin-top: 2px;
+    position: relative;
+    flex: none;
+}
+
+.address-option input:checked + .radio-mark:after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: #6b3e2c;
+}
+
+.address-copy {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #75665e;
+}
+
+.address-copy strong {
+    color: #35261f;
+}
+
+.outline-btn {
+    margin-top: 13px;
+    background: none;
+    border: 1px dashed #bca99f;
+    color: #6d4432;
+    padding: 11px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   PAYMENT
+   ========================================================= */
+
+.payment-options {
+    display: grid;
+    gap: 10px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #e4d9d3;
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.payment-option input {
+    display: none;
+}
+
+.payment-option.active {
+    border-color: #744936;
+    background: #fcf8f5;
+}
+
+.payment-option span {
+    flex: 1;
+}
+
+.payment-option b {
+    display: block;
+    color: #3b2a23;
+    font-size: 14px;
+}
+
+.payment-option small {
+    display: block;
+    color: #8a7b73;
+    margin-top: 3px;
+}
+
+.payment-option i {
+    font-style: normal;
+    font-size: 20px;
+    color: #704631;
+}
+
+.payment-info {
+    display: none;
+    margin-top: 12px;
+    padding: 13px;
+    background: #f7f1ed;
+    border-radius: 10px;
+    color: #6c5549;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.payment-info.show {
+    display: block;
+}
+
+
+/* =========================================================
+   ORDER SUMMARY
+   ========================================================= */
+
+.summary-card {
+    padding: 24px;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee4df;
+    padding-bottom: 18px;
+}
+
+.summary-head span {
+    font-size: 12px;
+    color: #988980;
+}
+
+.summary-products {
+    padding: 8px 0;
+}
+
+.summary-product {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.summary-image {
+    width: 52px;
+    height: 58px;
+    border-radius: 8px;
+    background: #f2ece8;
+    overflow: hidden;
+}
+
+.summary-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.summary-product strong {
+    display: block;
+    font-size: 12px;
+    color: #3b2b24;
+}
+
+.summary-product small {
+    display: block;
+    color: #96877e;
+    margin-top: 4px;
+}
+
+.summary-product > b {
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SUMMARY LINES
+   ========================================================= */
+
+.summary-lines {
+    border-top: 1px solid #eee4df;
+    border-bottom: 1px solid #eee4df;
+    padding: 14px 0;
+}
+
+.summary-lines div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 5px 0;
+    color: #75665f;
+}
+
+.summary-lines em {
+    font-style: normal;
+    color: #51834c;
+}
+
+.summary-lines .discount {
+    color: #4e8450;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+}
+
+.summary-total span {
+    font-weight: 700;
+}
+
+.summary-total strong {
+    font: 700 25px Georgia, serif;
+    color: #6a3d2b;
+}
+
+
+/* =========================================================
+   PLACE ORDER
+   ========================================================= */
+
+.place-order-btn {
+    width: 100%;
+    border: 0;
+    background: #3a2018;
+    color: #fff;
+    padding: 16px;
+    border-radius: 11px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    cursor: pointer;
+}
+
+.place-order-btn:hover {
+    background: #5a3022;
+}
+
+.place-order-btn span {
+    float: right;
+}
+
+.secure-note {
+    text-align: center;
+    font-size: 11px;
+    color: #9a8c85;
+    margin: 13px 0 0;
+}
+
+
+/* =========================================================
+   TRUST / SECURITY
+   ========================================================= */
+
+.trust-mini {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 15px;
+    margin-top: 12px;
+}
+
+.trust-mini > span {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1e9e4;
+    color: #69402f;
+}
+
+.trust-mini b,
+.trust-mini small {
+    display: block;
+}
+
+.trust-mini b {
+    font-size: 12px;
+    color: #4b372e;
+}
+
+.trust-mini small {
+    font-size: 11px;
+    color: #96877f;
+    margin-top: 3px;
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alert {
+    margin-bottom: 15px;
+}
+
+.checkout-section .alert {
+    border-radius: 10px;
+    padding: 12px 15px;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    .checkout-steps {
+        overflow: auto;
+        white-space: nowrap;
+    }
+
+    .checkout-steps i {
+        width: 25px;
+    }
+
+    .checkout-hero {
+        padding: 50px 0 40px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .checkout-section {
+        padding: 25px 0 55px;
+    }
+
+    .checkout-card {
+        padding: 19px;
+        border-radius: 14px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid .full {
+        grid-column: auto;
+    }
+
+    .address-save {
+        display: block;
+    }
+
+    .address-save select {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .checkout-hero h1 {
+        font-size: 42px;
+    }
+
+    .summary-card {
+        padding: 18px;
+    }
+}

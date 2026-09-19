@@ -1,0 +1,434 @@
+{% extends 'products/base.html' %}
+
+{% block title %}
+    Order #{{ order.id }} | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= ORDER ACTIONS ================= -->
+
+<div
+    class="order-actions"
+    style="max-width:1100px;margin:20px auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;"
+>
+
+    <a
+        class="btn"
+        href="{% url 'invoice_pdf' order.id %}"
+    >
+        Download Invoice
+    </a>
+
+    {% if order.payment_method == "razorpay" and order.payment_status != "paid" and order.order_status != "cancelled" %}
+
+        <button
+            type="button"
+            class="btn"
+            id="retry-payment"
+        >
+            Retry Payment
+        </button>
+
+    {% endif %}
+
+
+    {% if order.order_status == 'pending' or order.order_status == 'processing' %}
+
+        {% if order.payment_status != 'paid' %}
+
+            <form
+                method="post"
+                action="{% url 'cancel_order' order.id %}"
+                style="display:inline;"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    class="btn"
+                    type="submit"
+                    onclick="return confirm('Cancel this order?')"
+                >
+                    Cancel Order
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+
+<!-- ================= ORDER HEADER ================= -->
+
+<section
+    class="py-5 text-center text-white"
+    style="background:#4E2A1E"
+>
+
+    <div class="container">
+
+        <h1>
+            Order #{{ order.id }}
+        </h1>
+
+        <p>
+            {{ order.created_at|date:"d M Y, h:i A" }}
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ORDER CONTENT ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ================= ORDER ITEMS ================= -->
+
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-dark text-white">
+                        Order Items
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for item in order.items.all %}
+
+                            <div
+                                class="d-flex justify-content-between border-bottom py-3"
+                            >
+
+                                <div>
+
+                                    <strong>
+                                        {{ item.product_name }}
+                                    </strong>
+
+                                    <div class="small text-muted">
+
+                                        Qty {{ item.quantity }}
+                                        × ₹{{ item.price }}
+
+                                    </div>
+
+                                </div>
+
+                                <strong>
+                                    ₹{{ item.total }}
+                                </strong>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= DELIVERY STATUS ================= -->
+
+                <div class="card border-0 shadow-sm mt-4">
+
+                    <div class="card-header bg-warning">
+                        Delivery Status
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for event in order.status_history.all %}
+
+                            <div class="d-flex gap-3 mb-3">
+
+                                <div class="badge bg-dark align-self-start">
+                                    {{ event.get_status_display }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ event.created_at|date:"d M Y, h:i A" }}
+                                    </strong>
+
+                                    <div class="text-muted">
+                                        {{ event.note }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= ORDER SUMMARY ================= -->
+
+            <div class="col-lg-5">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-dark text-white">
+                        Summary
+                    </div>
+
+                    <div class="card-body">
+
+
+                        <!-- Subtotal -->
+
+                        <p class="d-flex justify-content-between">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong>
+                                ₹{{ order.subtotal }}
+                            </strong>
+
+                        </p>
+
+
+                        <!-- Shipping -->
+
+                        <p class="d-flex justify-content-between">
+
+                            <span>
+                                Shipping
+                            </span>
+
+                            <strong>
+                                ₹{{ order.shipping_fee }}
+                            </strong>
+
+                        </p>
+
+
+                        <!-- Discount -->
+
+                        {% if order.discount_amount %}
+
+                            <p class="d-flex justify-content-between text-success">
+
+                                <span>
+                                    Discount
+                                </span>
+
+                                <strong>
+                                    -₹{{ order.discount_amount }}
+                                </strong>
+
+                            </p>
+
+                        {% endif %}
+
+
+                        <hr>
+
+
+                        <!-- Total -->
+
+                        <p class="d-flex justify-content-between fs-5">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                ₹{{ order.total_price }}
+                            </strong>
+
+                        </p>
+
+
+                        <!-- Payment -->
+
+                        <p class="mb-1">
+
+                            <strong>
+                                Payment:
+                            </strong>
+
+                            {{ order.get_payment_method_display }}
+
+                        </p>
+
+
+                        <!-- Order Status -->
+
+                        <p>
+
+                            <strong>
+                                Status:
+                            </strong>
+
+                            {{ order.get_order_status_display }}
+
+                        </p>
+
+
+                        <hr>
+
+
+                        <!-- Delivery Address -->
+
+                        <strong>
+                            Delivery Address
+                        </strong>
+
+                        <p class="mb-0">
+
+                            {{ order.full_name }}<br>
+
+                            {{ order.address }}<br>
+
+                            {{ order.city }},
+                            {{ order.state }}
+                            -
+                            {{ order.pincode }}<br>
+
+                            {{ order.phone }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+<!-- ================= RAZORPAY RETRY PAYMENT ================= -->
+
+{% if order.payment_method == "razorpay" and order.payment_status != "paid" and order.order_status != "cancelled" %}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+(function () {
+
+    const btn = document.getElementById('retry-payment');
+
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+
+        btn.disabled = true;
+
+        try {
+
+            const r = await fetch(
+                "{% url 'retry_razorpay_payment' order.id %}",
+                {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }
+            );
+
+            const d = await r.json();
+
+            if (!d.ok) {
+                throw new Error(d.error);
+            }
+
+
+            const rz = new Razorpay({
+
+                key: d.key,
+
+                amount: d.amount,
+
+                currency: d.currency,
+
+                name: d.name,
+
+                description: d.description,
+
+                order_id: d.razorpay_order_id,
+
+                prefill: d.prefill,
+
+                theme: {
+                    color: '#4a2418'
+                },
+
+                handler: async function (p) {
+
+                    const v = await fetch(
+                        "{% url 'verify_razorpay_payment' %}",
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+
+                            body: JSON.stringify({
+                                order_id: d.order_id,
+                                razorpay_order_id: p.razorpay_order_id,
+                                razorpay_payment_id: p.razorpay_payment_id,
+                                razorpay_signature: p.razorpay_signature
+                            })
+                        }
+                    );
+
+                    const x = await v.json();
+
+                    if (!x.ok) {
+                        throw new Error(x.error);
+                    }
+
+                    location.href = x.redirect;
+
+                }
+
+            });
+
+            rz.open();
+
+        } catch (e) {
+
+            alert(
+                e.message || 'Payment retry failed.'
+            );
+
+            btn.disabled = false;
+
+        }
+
+    });
+
+})();
+</script>
+
+{% endif %}

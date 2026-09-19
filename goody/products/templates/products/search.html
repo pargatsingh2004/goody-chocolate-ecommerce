@@ -1,0 +1,135 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+Search Results | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- Search Header -->
+<section class="py-5 text-white text-center" style="background: linear-gradient(135deg, #3E2723 0%, #7B3F00 100%);">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3" style="color: #D4AF37;">
+            <i class="bi bi-search me-3"></i>Search Results
+        </h1>
+        {% if query %}
+        <p style="color: #FFECB3; font-size: 18px;">
+            Showing results for: <strong>"{{ query }}"</strong>
+        </p>
+        {% else %}
+        <p style="color: #FFECB3; font-size: 18px;">
+            Enter a search term to find products
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Search Form -->
+<section class="py-4" style="background: #F5E6D3;">
+    <div class="container">
+        <form action="{% url 'search' %}" method="get" class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" 
+                           class="form-control" 
+                           name="q" 
+                           value="{{ query }}"
+                           placeholder="Search for chocolates..." 
+                           required
+                           style="border-radius: 50px 0 0 50px; border: 2px solid #D4AF37; padding: 15px 25px;">
+                    <button class="btn btn-warning" 
+                            type="submit" 
+                            style="border-radius: 0 50px 50px 0; padding: 10px 30px; font-weight: 600;">
+                        <i class="bi bi-search me-2"></i>Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Search Results -->
+<section class="py-5">
+    <div class="container">
+
+        {% if query %}
+            {% if products %}
+            <div class="mb-4">
+                <h4 style="color: #3E2723;">Found {{ products.count }} product{{ products.count|pluralize }}</h4>
+            </div>
+
+            <div class="row g-4">
+                {% for product in products %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius: 20px; overflow: hidden;">
+
+                        <a href="{% url 'product_detail' product.id %}">
+                            <img src="{{ product.image.url }}"
+                                 class="card-img-top"
+                                 style="height:280px; object-fit:cover;"
+                                 alt="{{ product.name }}">
+                        </a>
+
+                        <div class="card-body text-center">
+                            
+                            <h5 class="fw-bold mb-2" style="color: #3E2723;">
+                                {{ product.name }}
+                            </h5>
+
+                            <p class="text-muted mb-3">
+                                {{ product.description|truncatewords:12 }}
+                            </p>
+
+                            <h4 class="mb-3" style="color: #7B3F00; font-weight: 800;">
+                                ₹{{ product.price }}
+                            </h4>
+
+                            <div class="d-grid gap-2">
+                                
+                                <a href="{% url 'product_detail' product.id %}"
+                                   class="btn btn-outline-dark"
+                                   style="border-radius: 50px; font-weight: 600;">
+                                    <i class="bi bi-eye me-2"></i>View Details
+                                </a>
+
+                                <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-warning w-100" style="border-radius: 50px; font-weight: 600;">
+                                        <i class="bi bi-cart-plus me-2"></i>Add To Cart
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% else %}
+            <!-- No Results -->
+            <div class="text-center py-5">
+                <i class="bi bi-emoji-frown display-1" style="color: #D4AF37;"></i>
+                <h3 class="mt-4" style="color: #3E2723;">No products found for "{{ query }}"</h3>
+                <p style="color: #6F4E37;">Try searching with different keywords or browse all products.</p>
+                <a href="{% url 'shop' %}" class="btn btn-dark mt-3" style="border-radius: 50px; padding: 12px 30px;">
+                    <i class="bi bi-grid me-2"></i>View All Products
+                </a>
+            </div>
+            {% endif %}
+        {% else %}
+        <!-- No Query -->
+        <div class="text-center py-5">
+            <i class="bi bi-search display-1" style="color: #D4AF37;"></i>
+            <h3 class="mt-4" style="color: #3E2723;">Start Your Search</h3>
+            <p style="color: #6F4E37;">Enter a keyword above to find your favorite chocolates.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'products/base.html' %}
+
+{% block title %}
+    My Orders | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= ORDERS HEADER ================= -->
+
+<section
+    class="py-5 text-center text-white"
+    style="background:#4E2A1E"
+>
+
+    <div class="container">
+
+        <h1>
+            My Orders
+        </h1>
+
+        <p>
+            Track every Goody order in one place.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ORDERS ================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body">
+
+                {% for order in orders %}
+
+                    <div class="row align-items-center border-bottom py-4">
+
+                        <!-- Order ID -->
+
+                        <div class="col-md-3">
+
+                            <strong>
+                                #{{ order.id }}
+                            </strong>
+
+                            <div class="small text-muted">
+                                {{ order.created_at|date:"d M Y" }}
+                            </div>
+
+                        </div>
+
+
+                        <!-- Item Count -->
+
+                        <div class="col-md-3">
+
+                            {{ order.item_count }}
+                            item{{ order.item_count|pluralize }}
+
+                        </div>
+
+
+                        <!-- Order Status -->
+
+                        <div class="col-md-3">
+
+                            <span class="badge bg-dark">
+                                {{ order.get_order_status_display }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- Total + Details -->
+
+                        <div class="col-md-3 text-md-end">
+
+                            <strong>
+                                ₹{{ order.total_price }}
+                            </strong>
+
+                            <br>
+
+                            <a href="{% url 'order_detail' order.id %}">
+                                View details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="text-center py-5">
+
+                        <h4>
+                            No orders yet
+                        </h4>
+
+                        <a
+                            class="btn btn-dark"
+                            href="{% url 'shop' %}"
+                        >
+                            Start Shopping
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

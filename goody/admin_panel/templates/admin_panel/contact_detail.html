@@ -1,0 +1,90 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}{{ contact.subject }}{% endblock %}
+{% block page_title %}Message from {{ contact.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">{{ contact.subject }}</h6>
+                <span class="badge-status badge-{{ contact.status }}">{{ contact.get_status_display }}</span>
+            </div>
+            <div class="gd-card-body">
+                <h6 style="color:#D4AF37; margin-bottom:4px;">{{ contact.name }}</h6>
+                <p style="color:#9c8f83; margin:0 0 20px; font-size:13px;">{{ contact.email }} • {{ contact.phone }}</p>
+
+                <div style="background:#14100e; padding:20px; border-radius:10px; margin-bottom:20px; line-height:1.6; border-left:4px solid #D4AF37;">
+                    {{ contact.message|linebreaksbr }}
+                </div>
+
+                <p style="color:#9c8f83; font-size:12px; margin-bottom:20px;">
+                    <strong>Received:</strong> {{ contact.created_at|date:"M d, Y H:i" }}
+                </p>
+            </div>
+        </div>
+
+        {% if contact.reply %}
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Your Reply</h6>
+            </div>
+            <div class="gd-card-body">
+                <div style="background:#14100e; padding:20px; border-radius:10px; line-height:1.6; border-left:4px solid #4CAF50;">
+                    {{ contact.reply|linebreaksbr }}
+                </div>
+                <p style="color:#9c8f83; font-size:12px; margin-top:15px; margin-bottom:0;">
+                    <strong>Sent:</strong> {{ contact.replied_at|date:"M d, Y H:i" }}
+                </p>
+            </div>
+        </div>
+        {% else %}
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Send Reply</h6>
+            </div>
+            <div class="gd-card-body">
+                <form method="post" class="gd-form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.reply.id_for_label }}" class="form-label">Reply Message</label>
+                        {{ form.reply }}
+                        {% if form.reply.errors %}<div class="text-danger small mt-1">{{ form.reply.errors }}</div>{% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-gold fw-bold">
+                        <i class="bi bi-send-fill me-2"></i>Send Reply
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Contact Info</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0 0 8px;"><strong>Name</strong><br><span style="color:#D4AF37;">{{ contact.name }}</span></p>
+                <p style="margin:0 0 8px;"><strong>Email</strong><br><span style="color:#9c8f83; font-size:12px;">{{ contact.email }}</span></p>
+                <p style="margin:0;"><strong>Phone</strong><br><span style="color:#9c8f83; font-size:12px;">{{ contact.phone|default:"Not provided" }}</span></p>
+            </div>
+        </div>
+
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Message Dates</h6>
+            </div>
+            <div class="gd-card-body">
+                <p style="margin:0 0 8px; font-size:12px;"><strong>Received:</strong> {{ contact.created_at|date:"M d, Y H:i" }}</p>
+                {% if contact.replied_at %}<p style="margin:0; font-size:12px;"><strong>Replied:</strong> {{ contact.replied_at|date:"M d, Y H:i" }}</p>{% endif %}
+            </div>
+        </div>
+
+        <a href="{% url 'admin_contacts' %}" class="btn btn-outline-light w-100">
+            <i class="bi bi-arrow-left me-2"></i>Back to Messages
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,444 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+Register | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<section class="register-page">
+    <div class="container py-5">
+
+    <div class="row justify-content-center align-items-center min-vh-75">
+
+        <div class="col-lg-10 col-xl-9">
+
+            <div class="register-card">
+
+                <div class="row g-0">
+
+                    <!-- ================= LEFT SIDE ================= -->
+
+                    <div class="col-lg-5 register-brand">
+
+                        <div class="register-brand-content text-center">
+
+                            <img src="{% static 'images/logo.png' %}"
+                                 alt="THE GOODY CO."
+                                 class="register-logo">
+
+                            <h1>THE GOODY CO.</h1>
+
+                            <h4>Chocolate & More</h4>
+
+                            <div class="register-divider"></div>
+
+                            <h3>Join Our Sweet Family</h3>
+
+                            <p>
+                                Create your account and discover
+                                premium handmade chocolates,
+                                exclusive offers and delicious
+                                surprises.
+                            </p>
+
+                            <div class="register-features">
+
+                                <div>
+                                    <i class="bi bi-gift-fill"></i>
+                                    <span>Exclusive Offers</span>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-heart-fill"></i>
+                                    <span>Save Your Wishlist</span>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-truck"></i>
+                                    <span>Track Your Orders</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================= RIGHT SIDE ================= -->
+
+                    <div class="col-lg-7 register-form-section">
+
+                        <div class="register-form-wrapper">
+
+                            <div class="text-center mb-4">
+
+                                <span class="register-icon">
+                                    <i class="bi bi-person-plus-fill"></i>
+                                </span>
+
+                                <h2>Create Account</h2>
+
+                                <p>
+                                    Register to start your chocolate journey
+                                </p>
+
+                            </div>
+
+
+                            <!-- Django Messages -->
+
+                            {% if messages %}
+
+                                {% for message in messages %}
+
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                         role="alert">
+
+                                        {{ message }}
+
+                                        <button type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="alert">
+                                        </button>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            {% endif %}
+
+
+                            <!-- Form Errors -->
+
+                            {% if form.errors %}
+
+                                <div class="alert alert-danger">
+
+                                    <strong>Please correct the following errors:</strong>
+
+                                    <ul class="mb-0 mt-2">
+
+                                        {% for field in form %}
+
+                                            {% for error in field.errors %}
+
+                                                <li>
+                                                    {{ field.label }}:
+                                                    {{ error }}
+                                                </li>
+
+                                            {% endfor %}
+
+                                        {% endfor %}
+
+                                        {% for error in form.non_field_errors %}
+
+                                            <li>{{ error }}</li>
+
+                                        {% endfor %}
+
+                                    </ul>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- ================= REGISTER FORM ================= -->
+
+                            <form method="post"
+                                  action="{% url 'register' %}"
+                                  autocomplete="off">
+
+                                {% csrf_token %}
+
+
+                                <!-- First Name -->
+
+                                <div class="register-input-group">
+
+                                    <label for="name">
+                                        First Name
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-person"></i>
+
+                                        <input type="text"
+                                               name="first_name"
+                                               id="name"
+                                               class="form-control"
+                                               placeholder="Enter your first name"
+                                               value="{{ form.name.value|default:'' }}"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Last Name -->
+
+                                <div class="register-input-group">
+
+                                    <label for="id_last_name">
+                                        Last Name
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-person"></i>
+
+                                        <input type="text"
+                                               name="last_name"
+                                               id="id_last_name"
+                                               class="form-control"
+                                               placeholder="Enter your last name"
+                                               value="{{ form.last_name.value|default:'' }}"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Username -->
+
+                                <div class="register-input-group">
+
+                                    <label for="username">
+                                        Username
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-at"></i>
+
+                                        <input type="text"
+                                               name="username"
+                                               id="username"
+                                               class="form-control"
+                                               placeholder="Choose a username"
+                                               value="{{ form.username.value|default:'' }}"
+                                               autocomplete="username"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Email -->
+
+                                <div class="register-input-group">
+
+                                    <label for="email">
+                                        Email Address
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-envelope"></i>
+
+                                        <input type="email"
+                                               name="email"
+                                               id="email"
+                                               class="form-control"
+                                               placeholder="Enter your email address"
+                                               value="{{ form.email.value|default:'' }}"
+                                               autocomplete="email"
+                                               required>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Password -->
+
+                                <div class="register-input-group">
+
+                                    <label for="password1">
+                                        Password
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-lock"></i>
+
+                                        <input type="password"
+                                               name="password1"
+                                               id="password1"
+                                               class="form-control"
+                                               placeholder="Create a strong password"
+                                               autocomplete="new-password"
+                                               required>
+
+                                        <button type="button"
+                                                class="password-toggle"
+                                                onclick="togglePassword('password1', this)"
+                                                aria-label="Show password">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Confirm Password -->
+
+                                <div class="register-input-group">
+
+                                    <label for="password2">
+                                        Confirm Password
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="bi bi-shield-lock"></i>
+
+                                        <input type="password"
+                                               name="password2"
+                                               id="password2"
+                                               class="form-control"
+                                               placeholder="Confirm your password"
+                                               autocomplete="new-password"
+                                               required>
+
+                                        <button type="button"
+                                                class="password-toggle"
+                                                onclick="togglePassword('password2', this)"
+                                                aria-label="Show password">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Terms -->
+
+                                <div class="register-terms">
+
+                                    <label>
+
+                                        <input type="checkbox"
+                                               name="terms"
+                                               required>
+
+                                        <span>
+                                            I agree to the
+                                            <a href="#">
+                                                Terms & Conditions
+                                            </a>
+                                            and
+                                            <a href="#">
+                                                Privacy Policy
+                                            </a>.
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+
+                                <!-- Register Button -->
+
+                                <button type="submit"
+                                        class="btn btn-warning register-submit">
+
+                                    <i class="bi bi-person-plus-fill"></i>
+
+                                    Create My Account
+
+                                </button>
+
+
+                            </form>
+
+
+                            <!-- ================= LOGIN ================= -->
+
+                            <div class="register-login">
+
+                                <span>
+                                    Already have an account?
+                                </span>
+
+                                <a href="{% url 'login' %}">
+                                    Login Here
+                                </a>
+
+                            </div>
+
+
+                            <!-- ================= OTP NOTE ================= -->
+
+                            <div class="otp-note">
+
+                                <i class="bi bi-shield-check"></i>
+
+                                <span>
+                                    Your email can be verified securely
+                                    using OTP during the registration process.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- ================= PASSWORD TOGGLE ================= -->
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+    const icon = button.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

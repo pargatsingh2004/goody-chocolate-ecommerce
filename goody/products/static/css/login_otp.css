@@ -1,0 +1,212 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #f8f3ef 0%, #efe4dc 100%);
+    color: #2d1a13;
+}
+
+/* Main OTP Card */
+main {
+    width: 100%;
+    max-width: 440px;
+    padding: 45px 38px;
+    background: #ffffff;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(61, 35, 24, 0.15);
+    animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+h1 {
+    margin-bottom: 15px;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #4a2416;
+}
+
+/* Description */
+p {
+    margin-bottom: 7px;
+    color: #777;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Email */
+strong {
+    display: block;
+    margin-bottom: 25px;
+    color: #5a2d1c;
+    font-size: 15px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* Django Messages */
+main > div {
+    margin-bottom: 20px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    background: #f5eee9;
+    color: #5a2d1c;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Forms */
+form {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* Label */
+label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+    color: #3b241b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* OTP Input */
+input[type="text"] {
+    width: 100%;
+    height: 58px;
+    padding: 10px 15px;
+    border: 1px solid #d8cec7;
+    border-radius: 10px;
+    outline: none;
+    background: #ffffff;
+    color: #2d1a13;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 9px;
+    transition: 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+    color: #c9bfba;
+    letter-spacing: 7px;
+}
+
+input[type="text"]:focus {
+    border-color: #5a2d1c;
+    box-shadow: 0 0 0 4px rgba(90, 45, 28, 0.09);
+    transform: translateY(-1px);
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+/* Verify Button */
+form:first-of-type button {
+    margin-top: 17px;
+    background: #5a2d1c;
+    color: #ffffff;
+    box-shadow: 0 7px 18px rgba(90, 45, 28, 0.18);
+}
+
+form:first-of-type button:hover {
+    background: #3f1f13;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(90, 45, 28, 0.25);
+}
+
+/* Resend OTP */
+form:nth-of-type(2) button {
+    background: transparent;
+    color: #5a2d1c;
+    border: 1px solid #d8cec7;
+}
+
+form:nth-of-type(2) button:hover {
+    background: #f8f3ef;
+    border-color: #5a2d1c;
+    transform: translateY(-1px);
+}
+
+/* Back to Login */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #5a2d1c;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+a:hover {
+    color: #3f1f13;
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    main {
+        padding: 35px 22px;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    strong {
+        font-size: 14px;
+    }
+
+    input[type="text"] {
+        height: 55px;
+        font-size: 21px;
+        letter-spacing: 7px;
+    }
+
+    button {
+        height: 50px;
+    }
+}

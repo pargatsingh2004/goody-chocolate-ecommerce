@@ -1,0 +1,381 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block title %}
+    Shop Chocolates | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= SHOP HERO ================= -->
+
+<section class="page-hero">
+
+    <div class="container text-center">
+
+        <div class="eyebrow text-warning">
+            THE GOODY CO.
+        </div>
+
+        <h1 class="display-4 fw-bold mt-2">
+            Shop chocolates
+        </h1>
+
+        <p class="mb-0 text-white-50">
+            Discover something delicious for every craving.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CATEGORY FILTER ================= -->
+
+<section
+    class="py-4"
+    style="background:#f7eee4"
+>
+
+    <div class="container">
+
+        <div class="shop-toolbar">
+
+            <div class="filter-pills">
+
+                <a
+                    href="{% url 'shop' %}"
+                    class="{% if not selected_category %}active{% endif %}"
+                >
+                    All
+                </a>
+
+                {% for cat in categories %}
+
+                    <a
+                        href="{% url 'shop' %}?category={{ cat.id }}"
+                        class="{% if selected_category and selected_category.id == cat.id %}active{% endif %}"
+                    >
+                        {{ cat.name }}
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRODUCT COLLECTION ================= -->
+
+<section class="product-section pt-5">
+
+    <div class="container">
+
+        <!-- Toolbar -->
+
+        <div
+            class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4"
+        >
+
+            <div>
+
+                <div class="eyebrow">
+                    Collection
+                </div>
+
+                <h2 class="h3 fw-bold mb-0">
+
+                    {% if selected_category %}
+                        {{ selected_category.name }}
+                    {% else %}
+                        All chocolates
+                    {% endif %}
+
+                </h2>
+
+            </div>
+
+
+            <!-- Product Count + Sorting -->
+
+            <div class="d-flex align-items-center gap-2">
+
+                <span class="small text-muted">
+                    {{ products|length }} products
+                </span>
+
+                <select
+                    id="productSort"
+                    class="form-select sort-select"
+                    style="width:170px"
+                >
+
+                    <option value="default">
+                        Featured
+                    </option>
+
+                    <option value="price-low">
+                        Price: Low to high
+                    </option>
+
+                    <option value="price-high">
+                        Price: High to low
+                    </option>
+
+                    <option value="name">
+                        Name A–Z
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT GRID ================= -->
+
+        <div
+            class="row g-4"
+            id="productGrid"
+        >
+
+            {% for product in products %}
+
+                <div
+                    class="col-xl-3 col-lg-4 col-md-6 product-grid-item"
+                    data-name="{{ product.name|lower }}"
+                    data-price="{{ product.discounted_price }}"
+                >
+
+                    <div class="product-card">
+
+                        <!-- Product Image -->
+
+                        <div class="product-media">
+
+                            <a href="{% url 'product_detail' product.id %}">
+
+                                {% if product.image %}
+
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        alt="{{ product.name }}"
+                                        loading="lazy"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{% static 'images/no-product.png' %}"
+                                        alt="{{ product.name }}"
+                                    >
+
+                                {% endif %}
+
+                            </a>
+
+
+                            <!-- Discount Badge -->
+
+                            {% if product.discount > 0 %}
+
+                                <span class="product-badge">
+                                    {{ product.discount }}% OFF
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Product Details -->
+
+                        <div class="product-body">
+
+                            <div class="product-category">
+
+                                {% if product.category %}
+                                    {{ product.category.name }}
+                                {% else %}
+                                    Chocolate
+                                {% endif %}
+
+                            </div>
+
+
+                            <h3 class="product-title">
+
+                                <a href="{% url 'product_detail' product.id %}">
+                                    {{ product.name }}
+                                </a>
+
+                            </h3>
+
+
+                            <p class="small text-muted flex-grow-1">
+                                {{ product.description|truncatewords:14 }}
+                            </p>
+
+
+                            <!-- Price -->
+
+                            <div>
+
+                                {% if product.discount > 0 %}
+
+                                    <span class="price">
+                                        ₹{{ product.discounted_price }}
+                                    </span>
+
+                                    <span class="old-price ms-2">
+                                        ₹{{ product.price }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="price">
+                                        ₹{{ product.price }}
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- Stock + Actions -->
+
+                            {% if product.stock > 0 %}
+
+                                <div
+                                    class="small mt-2 {% if product.is_low_stock %}text-warning{% else %}text-success{% endif %}"
+                                >
+
+                                    <i
+                                        class="bi bi-circle-fill"
+                                        style="font-size:6px"
+                                    ></i>
+
+                                    {% if product.is_low_stock %}
+
+                                        Only {{ product.stock }} left
+
+                                    {% else %}
+
+                                        In stock
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="d-flex gap-2 mt-3">
+
+                                    <!-- Add To Cart -->
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'add_to_cart' product.id %}"
+                                        class="flex-grow-1"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            class="btn btn-goody w-100 add-cart"
+                                        >
+
+                                            <i class="bi bi-bag-plus me-1"></i>
+
+                                            Add
+
+                                        </button>
+
+                                    </form>
+
+
+                                    <!-- Wishlist -->
+
+                                    {% if user.is_authenticated %}
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'add_to_wishlist' product.id %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                class="btn btn-outline-dark rounded-pill px-3"
+                                                title="Wishlist"
+                                            >
+
+                                                <i class="bi bi-heart"></i>
+
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% else %}
+
+                                <button
+                                    class="btn btn-secondary w-100 mt-3"
+                                    disabled
+                                >
+                                    Out of stock
+                                </button>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <!-- Empty Product State -->
+
+                <div class="col-12 empty-state">
+
+                    <img
+                        src="{% static 'images/no-product.png' %}"
+                        alt="No products"
+                    >
+
+                    <h3 class="mt-3">
+                        Nothing here yet
+                    </h3>
+
+                    <p class="text-muted">
+                        Try another category.
+                    </p>
+
+                    <a
+                        href="{% url 'shop' %}"
+                        class="btn btn-goody"
+                    >
+                        View all products
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

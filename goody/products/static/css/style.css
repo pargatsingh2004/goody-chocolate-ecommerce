@@ -1,0 +1,946 @@
+
+/* =========================================================
+   GOODY CHOCOLATE — MAIN STYLESHEET
+   ========================================================= */
+
+
+/* =========================================================
+   1. ROOT VARIABLES
+   ========================================================= */
+
+:root {
+    --brown-950: #24120d;
+    --brown-900: #32170f;
+    --brown-800: #4b2418;
+    --brown-700: #6b3523;
+
+    --cream: #fffaf4;
+    --cream-2: #f7eee4;
+
+    --gold: #c79a45;
+    --gold-light: #ead39a;
+
+    --text: #30211b;
+    --muted: #786a62;
+    --white: #fff;
+
+    --success: #277a4b;
+    --danger: #b33b35;
+
+    --shadow: 0 18px 50px rgba(50, 23, 15, .10);
+    --radius: 22px;
+}
+
+
+/* =========================================================
+   2. GLOBAL STYLES
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Poppins, system-ui, sans-serif;
+    color: var(--text);
+    background: var(--cream);
+    line-height: 1.7;
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+.container {
+    max-width: 1240px;
+}
+
+
+/* =========================================================
+   3. NAVBAR
+   ========================================================= */
+
+.navbar {
+    background: rgba(36, 18, 13, .97) !important;
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(234, 211, 154, .18);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.navbar-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.brand-text h1 {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #fff;
+}
+
+.brand-text h2 {
+    font-size: 9px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.navbar .nav-link {
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 13px !important;
+    border-radius: 999px;
+    transition: .25s;
+}
+
+.navbar .nav-link:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--gold-light) !important;
+}
+
+.navbar .badge {
+    font-size: 9px;
+    position: absolute;
+    top: 2px;
+    right: 0;
+}
+
+
+/* =========================================================
+   4. DROPDOWN MENU
+   ========================================================= */
+
+.dropdown-menu {
+    border: 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 8px;
+}
+
+.dropdown-item {
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.dropdown-item:hover {
+    background: var(--cream-2);
+}
+
+
+/* =========================================================
+   5. HERO SECTION
+   ========================================================= */
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(199, 154, 69, .22),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #24120d,
+            #542a1d 58%,
+            #30150e
+        );
+    color: #fff;
+    padding: 90px 0 105px;
+}
+
+.hero-section:after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(234, 211, 154, .15);
+    border-radius: 50%;
+    right: -160px;
+    bottom: -220px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    padding: 7px 14px;
+    border: 1px solid rgba(234, 211, 154, .45);
+    border-radius: 999px;
+    color: var(--gold-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .7px;
+}
+
+.hero-title {
+    font-size: clamp(42px, 6vw, 78px);
+    line-height: 1.04;
+    letter-spacing: -2px;
+    margin: 20px 0;
+}
+
+.hero-text {
+    color: #eadfd8;
+    max-width: 620px;
+    font-size: 16px;
+}
+
+.hero-image {
+    max-height: 530px;
+    object-fit: contain;
+    filter: drop-shadow(
+        0 28px 28px rgba(0, 0, 0, .35)
+    );
+    animation: float 5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   6. BUTTONS
+   ========================================================= */
+
+.btn-goody {
+    background: linear-gradient(
+        135deg,
+        #e4bd63,
+        #b98732
+    );
+    border: 0;
+    color: #2a160e;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 13px 24px;
+    box-shadow: 0 10px 25px rgba(199, 154, 69, .22);
+}
+
+.btn-goody:hover {
+    transform: translateY(-2px);
+    color: #1d100b;
+}
+
+.btn-outline-goody {
+    border: 1px solid rgba(234, 211, 154, .55);
+    color: #fff;
+    border-radius: 999px;
+    padding: 13px 24px;
+}
+
+.btn-outline-goody:hover {
+    background: #fff;
+    color: var(--brown-900);
+}
+
+
+/* =========================================================
+   7. TYPOGRAPHY / SECTION HEADINGS
+   ========================================================= */
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.section-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--brown-900);
+}
+
+.section-subtitle {
+    color: var(--muted);
+    max-width: 650px;
+    margin: auto;
+}
+
+
+/* =========================================================
+   8. CATEGORY SECTION
+   ========================================================= */
+
+.category-section {
+    background: var(--cream-2);
+    padding: 80px 0;
+}
+
+.category-card {
+    height: 100%;
+    min-height: 250px;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(50, 23, 15, .08);
+    transition: .35s;
+}
+
+.category-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: .5s;
+}
+
+.category-card .category-overlay {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 55px 22px 20px;
+    background: linear-gradient(
+        transparent,
+        rgba(36, 18, 13, .9)
+    );
+    color: #fff;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 55px rgba(50, 23, 15, .16);
+}
+
+.category-card:hover img {
+    transform: scale(1.06);
+}
+
+
+/* =========================================================
+   9. PRODUCT SECTION
+   ========================================================= */
+
+.product-section {
+    padding: 85px 0;
+    background: #fff;
+}
+
+.product-card {
+    height: 100%;
+    background: #fff;
+    border: 1px solid #eee2d8;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(50, 23, 15, .06);
+    transition: .3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 22px 45px rgba(50, 23, 15, .13);
+}
+
+.product-media {
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-2);
+}
+
+.product-media img {
+    width: 100%;
+    height: 290px;
+    object-fit: cover;
+    transition: .5s;
+}
+
+.product-card:hover .product-media img {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #fff;
+    color: var(--brown-900);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+}
+
+.wishlist-float {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+    color: var(--brown-700);
+}
+
+.product-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-category {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--gold);
+    font-weight: 800;
+}
+
+.product-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 5px 0 10px;
+}
+
+.product-title a {
+    text-decoration: none;
+}
+
+.product-title a:hover {
+    color: var(--brown-700);
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--brown-900);
+}
+
+.old-price {
+    font-size: 12px;
+    color: #9c8e85;
+    text-decoration: line-through;
+}
+
+.star-rating {
+    color: #d19b37;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   10. TRUST STRIP
+   ========================================================= */
+
+.trust-strip {
+    background: var(--brown-950);
+    color: #fff;
+    padding: 28px 0;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trust-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(234, 211, 154, .12);
+    color: var(--gold-light);
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   11. PROMO SECTION
+   ========================================================= */
+
+.promo-section {
+    padding: 80px 0;
+    background: linear-gradient(
+        135deg,
+        #f7eee4,
+        #fffaf4
+    );
+}
+
+.promo-card {
+    border-radius: 28px;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        #3b1d14,
+        #6e3725
+    );
+    color: #fff;
+    min-height: 300px;
+    position: relative;
+    padding: 50px;
+}
+
+.promo-card:before {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 50%;
+    right: -70px;
+    top: -100px;
+}
+
+
+/* =========================================================
+   12. NEWSLETTER
+   ========================================================= */
+
+.newsletter-section {
+    background: var(--brown-900) !important;
+    color: #fff;
+    padding: 55px 0 !important;
+}
+
+.newsletter-section input {
+    border-radius: 999px 0 0 999px;
+    border: 0;
+    padding: 13px 18px;
+}
+
+.newsletter-section button {
+    border-radius: 0 999px 999px 0 !important;
+}
+
+
+/* =========================================================
+   13. FOOTER
+   ========================================================= */
+
+.goody-footer {
+    background: #1e100b;
+    color: #d9cbc2;
+    padding: 70px 0 20px;
+}
+
+.goody-footer h4,
+.goody-footer h5,
+.goody-footer h6 {
+    color: #fff;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #cdbfb7;
+    display: block;
+    padding: 5px 0;
+    transition: .2s;
+}
+
+.footer-links a:hover {
+    color: var(--gold-light);
+    padding-left: 5px;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .15);
+    margin-right: 7px;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    background: var(--gold);
+    color: #24120d;
+}
+
+.footer-contact li {
+    margin: 10px 0;
+    list-style: none;
+}
+
+.payment-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.payment-icons i {
+    font-size: 23px;
+}
+
+.footer-bottom {
+    font-size: 12px;
+    color: #9d8e85;
+}
+
+
+/* =========================================================
+   14. SEARCH MODAL
+   ========================================================= */
+
+.search-modal {
+    border: 0;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.search-modal-header {
+    background: var(--brown-900);
+    color: #fff;
+}
+
+.search-modal-body {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   15. PAGE HERO
+   ========================================================= */
+
+.page-hero {
+    background: linear-gradient(
+        135deg,
+        #32170f,
+        #6b3523
+    );
+    color: #fff;
+    padding: 70px 0;
+}
+
+
+/* =========================================================
+   16. SHOP TOOLBAR
+   ========================================================= */
+
+.shop-toolbar {
+    background: #fff;
+    border: 1px solid #eadfd6;
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(50, 23, 15, .05);
+}
+
+.filter-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-pills a {
+    border: 1px solid #dfd0c5;
+    border-radius: 999px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.filter-pills a.active,
+.filter-pills a:hover {
+    background: var(--brown-900);
+    color: #fff;
+    border-color: var(--brown-900);
+}
+
+
+/* =========================================================
+   17. PRODUCT DETAIL
+   ========================================================= */
+
+.detail-section {
+    padding: 75px 0;
+}
+
+.detail-image-wrap {
+    background: var(--cream-2);
+    border-radius: 28px;
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+}
+
+.detail-image-wrap img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+}
+
+.detail-content {
+    padding: 10px 0 0 20px;
+}
+
+.detail-title {
+    font-size: clamp(32px, 5vw, 55px);
+    line-height: 1.08;
+    font-weight: 800;
+    color: var(--brown-900);
+}
+
+.detail-price {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--brown-700);
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    border: 1px solid #ddd0c5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.quantity-control button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: #fff;
+}
+
+.quantity-control input {
+    width: 48px;
+    text-align: center;
+    border: 0;
+    background: #fff;
+}
+
+
+/* =========================================================
+   18. BENEFITS & REVIEWS
+   ========================================================= */
+
+.benefit-card {
+    border: 1px solid #eadfd6;
+    border-radius: 18px;
+    padding: 20px;
+    background: #fff;
+    height: 100%;
+}
+
+.review-card {
+    background: #fff;
+    border: 1px solid #eadfd6;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+
+/* =========================================================
+   19. UTILITY COMPONENTS
+   ========================================================= */
+
+.back-to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 0;
+    display: none;
+    z-index: 1050;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .6s;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+.toast-goody {
+    position: fixed;
+    right: 20px;
+    top: 90px;
+    z-index: 1080;
+}
+
+.empty-state {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.empty-state img {
+    max-width: 220px;
+}
+
+
+/* =========================================================
+   20. FORM CONTROLS
+   ========================================================= */
+
+.form-control,
+.form-select {
+    border-radius: 12px;
+    border: 1px solid #ded1c8;
+    padding: 11px 13px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 .2rem rgba(199, 154, 69, .12);
+}
+
+
+/* =========================================================
+   21. HERO FLOAT ANIMATION
+   ========================================================= */
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+
+/* =========================================================
+   22. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .navbar-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand-text h1 {
+        font-size: 15px;
+    }
+
+    .navbar .nav-link {
+        padding: 9px 12px !important;
+    }
+
+    .hero-section {
+        padding: 65px 0;
+    }
+
+    .hero-image {
+        max-height: 380px;
+        margin-top: 25px;
+    }
+
+    .detail-content {
+        padding: 35px 0 0;
+    }
+
+    .detail-image-wrap {
+        position: static;
+    }
+
+    .detail-image-wrap img {
+        height: 480px;
+    }
+}
+
+
+/* =========================================================
+   23. RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 575px) {
+
+    .hero-title {
+        font-size: 42px;
+    }
+
+    .hero-text {
+        font-size: 14px;
+    }
+
+    .hero-section {
+        padding: 55px 0 70px;
+    }
+
+    .category-section,
+    .product-section,
+    .promo-section,
+    .detail-section {
+        padding: 55px 0;
+    }
+
+    .category-card img {
+        height: 240px;
+    }
+
+    .product-media img {
+        height: 250px;
+    }
+
+    .promo-card {
+        padding: 32px;
+        min-height: 260px;
+    }
+
+    .newsletter-section input,
+    .newsletter-section button {
+        border-radius: 999px !important;
+    }
+
+    .newsletter-section button {
+        margin-top: 10px;
+    }
+
+    .detail-image-wrap img {
+        height: 360px;
+    }
+}
+
+
+/* =========================================================
+   24. PAGE LOADER
+   ========================================================= */
+
+#pageLoader {
+    position: fixed;
+    inset: 0;
+    background: #24120d;
+    display: grid;
+    place-items: center;
+    z-index: 2000;
+    transition: opacity .4s, visibility .4s;
+}
+
+.loader-mark {
+    color: #ead39a;
+    letter-spacing: 5px;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.loader-hide {
+    opacity: 0;
+    visibility: hidden;
+}

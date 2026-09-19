@@ -1,0 +1,83 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="gd-card">
+            <div class="gd-card-header">
+                <h6 class="mb-0 fw-bold">Payment Settings</h6>
+            </div>
+            <div class="gd-card-body">
+                <form method="post" enctype="multipart/form-data" class="gd-form">
+                    {% csrf_token %}
+
+                    <h6 style="color:#D4AF37; margin-top:0; margin-bottom:15px;">UPI / QR Code Payment</h6>
+                    <div class="mb-3">
+                        <label class="form-label">UPI ID</label>
+                        <input type="text" name="upi_id" class="form-control" value="{{ settings_obj.upi_id }}" placeholder="e.g. goodyco@upi">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">QR Code Image</label>
+                        <input type="file" name="qr_code" class="form-control" accept="image/*">
+                        {% if settings_obj.qr_code %}
+                        <div style="margin-top:10px;">
+                            <img src="{{ settings_obj.qr_code.url }}" alt="QR Code" style="width:150px; border-radius:8px;">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <hr style="border-color:#33291f; margin:20px 0;">
+
+                    <h6 style="color:#D4AF37; margin:0 0 15px;">Bank Transfer Details</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Bank Name</label>
+                                <input type="text" name="bank_name" class="form-control" value="{{ settings_obj.bank_name }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Account Holder Name</label>
+                                <input type="text" name="account_holder_name" class="form-control" value="{{ settings_obj.account_holder_name }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Account Number</label>
+                                <input type="text" name="account_number" class="form-control" value="{{ settings_obj.account_number }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">IFSC Code</label>
+                                <input type="text" name="ifsc_code" class="form-control" value="{{ settings_obj.ifsc_code }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bank Branch</label>
+                        <input type="text" name="bank_branch" class="form-control" value="{{ settings_obj.bank_branch }}">
+                    </div>
+
+                    <hr style="border-color:#33291f; margin:20px 0;">
+
+                    <h6 style="color:#D4AF37; margin:0 0 15px;">Payment Instructions</h6>
+                    <div class="mb-4">
+                        <label class="form-label">Instructions (shown to customer)</label>
+                        <textarea name="instructions" class="form-control" rows="4" placeholder="e.g. Send payment screenshot on WhatsApp after transfer">{{ settings_obj.instructions }}</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold fw-bold">
+                        <i class="bi bi-check-circle-fill me-2"></i>Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

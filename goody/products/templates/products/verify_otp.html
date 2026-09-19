@@ -1,0 +1,89 @@
+{% extends 'products/base.html' %}
+
+{% block title %}
+Verify Email | THE GOODY CO.
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-6 col-lg-5">
+
+                <div class="card border-0 shadow-lg">
+
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-4">
+
+                            <i class="bi bi-envelope-check-fill"
+                               style="font-size: 60px; color: #D4AF37;">
+                            </i>
+
+                        </div>
+
+                        <h2 class="fw-bold mb-3">
+                            Verify Your Email
+                        </h2>
+
+                        <p class="text-muted mb-4">
+                            We sent a 6-digit verification code to
+                        </p>
+
+                        <strong>
+                            {{ email }}
+                        </strong>
+
+                        <form method="post" class="mt-4">
+
+                            {% csrf_token %}
+
+                            <div class="mb-4">
+
+                                <input
+                                    type="text"
+                                    name="otp"
+                                    class="form-control text-center"
+                                    placeholder="Enter 6-digit OTP"
+                                    maxlength="6"
+                                    inputmode="numeric"
+                                    required
+                                    style="
+                                        font-size: 24px;
+                                        letter-spacing: 8px;
+                                        font-weight: 600;
+                                    "
+                                >
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning w-100 btn-lg">
+
+                                <i class="bi bi-check-circle me-2"></i>
+                                Verify OTP
+
+                            </button>
+
+                        </form>
+
+                        <p class="text-muted small mt-4 mb-0">
+                            OTP is valid for 5 minutes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
